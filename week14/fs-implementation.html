@@ -1,0 +1,892 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>파일 시스템 구현 &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'week14/fs-implementation';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="영속성을 정리하는 대화" href="summary.html" />
+    <link rel="prev" title="데이터 무결성과 보호" href="data-integrity.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week02/index.html">Week 2 - 가상화의 세계</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week02/dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-mechanisms.html">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week03/index.html">Week 3 - 스케줄링 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week03/cpu-scheduling.html">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week09/index.html">Week 9 - 메모리 가상화 4</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-tlbs.html">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Week 14 - 영속성 2</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="data-integrity.html">데이터 무결성과 보호</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/index.html">OS 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121010/index.html">Key-Value store project by ypilseong</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121010/homework.html">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/week14/fs-implementation.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fweek14/fs-implementation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/week14/fs-implementation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>파일 시스템 구현</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">생각하는 방법</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">전체 구성</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">파일 구성 : 아이노드</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">멀티 레벨 인덱스</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">디렉터리 구조</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">빈 공간의 관리</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">실행 흐름 : 읽기와 쓰기</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">디스크에 쓰기</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">캐싱과 버퍼링</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">요약</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id2">
+<h1>파일 시스템 구현<a class="footnote-reference brackets" href="#ypilseong" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h1>
+<section id="id3">
+<h2>생각하는 방법<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>파일 시스템에 대해 학습할 때 이런 방식으로 접근하면 도움이 됩니다.</p>
+<p>첫 번째는 파일 시스템의 자료 구조입니다. 파일 시스템이 자신의 데이터와 메타데이터를 관리하기 위해 어떤 자료 구조를 사용할까요? vsfs같은 파일 시스템은 블럭과 다른 객체들을 배열과 같은 간단한 자료 구조로 표현했지만 XFS와 같은 파일 시스템들은 좀 더 복잡한 트리 기반의 자료 구조를 사용합니다.</p>
+<p>두 번째는 접근 방법입니다. 프로세스가 호출하는 <code class="docutils literal notranslate"><span class="pre">open()</span></code>, <code class="docutils literal notranslate"><span class="pre">read()</span></code>, <code class="docutils literal notranslate"><span class="pre">write()</span></code> 등의 명령들은 파일 시스템의 자료 구조와 어떤 관련이 있을까요? 특정 시스템 콜을 실행할 때 어떤 자료 구조들이 읽힐까요? 어떤 것들이 쓰일까요?</p>
+<p>자료 구조와 접근 방법에 대해 이해하면 파일 시스템이 어떻게 작동하는지에 대한 개념을 잘 정립할 수 있습니다.</p>
+</section>
+<section id="id4">
+<h2>전체 구성<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>가장 먼저 해야 할 것은 디스크를 <em>블럭(block)</em> 단위로 나누는 것입니다. 단일 블럭 크기만 사용하고, 4KB로 정합시다. N개의 4KB 블럭 크기를 가지는 파티션에서, 블럭은 0부터 N-1까지 주소를 가지고 있습니다. 블럭이 64개 있는 작은 디스크를 생각해봅시다.</p>
+<p>이 블럭에 무엇이 들어가야 할까요? 가장 먼저 떠오르는 것은 사용자의 데이터입니다. 대부분의 공간이 사용자의 데이터로 채워져 있습니다. 이를 <em>데이터 영역 (data region)</em> 이라고 합시다.</p>
+<p><img alt="image" src="../_images/image-5.jpeg" /></p>
+<p>파일 시스템은 각 파일에 대한 정보를 관리합니다. 그 정보가 <em>메타데이터</em>의 핵심입니다. 파일을 구성하는 데이터 블럭들, 그 파일의 크기, 소유자, 접근 권한, 접근과 변경 시간 등과 같은 정보가 메타데이터입니다. 파일 시스템은 이러한 정보를 <em>아이노드(inode)</em> 라고 부르는 자료 구조에 저장합니다.</p>
+<p>이 아이노드들은 아이노드 테이블에 저장됩니다. 아이노드당 256bytes를 가정하면 4KB 블럭 하나에 16개의 아이노드를 저장할 수 있습니다. 우리 디스크 파티션에는 80개의 아이노드를 저장할 수 있습니다.</p>
+<p><img alt="image" src="../_images/image-6.jpeg" /></p>
+<p>아직 더 필요한 정보가 남아 있습니다. 아이노드나 데이터 블럭의 사용 여부에 관한 정보입니다. <em>할당 구조(allocation structure)</em> 가 필요합니다.</p>
+<p>블럭이 사용 중인지 아닌지를 표현하는 데에는 다양한 방법이 있습니다. free list를 사용해서, 사용 중이 아닌 블럭들을 연결 리스트로 관리하는 방법도 있습니다. 아이노드는 첫 번째 프리 블럭의 위치만 기억하면 됩니다. 우리는 단순한 비트맵을 사용합니다. 데이터 비트맵으로 데이터 영역이 사용 중인지, 아이노드 비트맵으로 아이노드 테이블에 있는 아이노드들이 사용 중인지를 나타냅니다. 비트맵은 비트들의 배열입니다. 각 비트는 해당 블럭이나 객체가 사용 중인지(in-use: 1) 사용 중이 아닌지(free: 0)나타냅니다.</p>
+<p><img alt="image" src="../_images/image-7.jpeg" /></p>
+<p>남은 한 블럭은 슈퍼블럭(superblock) 을 위한 공간입니다 (S로 나타냄). 슈퍼블럭은 이 파일 시스템 전체에 대한 정보를 담고 있습니다. 예를 들어, 파일 시스템에 몇 개의 아이노드와 데이터 블럭이 있는지, 아이노드 테이블은 어디서 시작하는지와 같은 정보를 가지고 있습니다. 파일 시스템을 식별할 수 있는 매직 넘버도 가지고 있습니다. 파일 시스템이 깨진다는 것은, 슈퍼블럭이 저장된 디스크 블럭이 훼손되는 것입니다. 일반적으로 파일 시스템은 슈퍼블럭을 몇 개 복사해둡니다.</p>
+<p><img alt="image" src="../_images/image-8.jpeg" /></p>
+<p>운영체제가 우선 슈퍼블럭을 읽어들여서 파일 시스템의 여러 요소들을 초기화하고, 그 후 각 파티션을 파일 시스템 트리에 붙이는 작업을 통해 파일 시스템을 마운트합니다.</p>
+</section>
+<section id="id5">
+<h2>파일 구성 : 아이노드<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>파일 시스템의 자료 구조 중 가장 중요한 것은 아이노드입니다. index node의 줄임말입니다.</p>
+<p>각 아이노드는 숫자 inumber로 표현됩니다. vsfs에서는 아이넘버를 통해 해당 아이노드가 디스크 어디에 있는지를 직접적으로 계산할 수 있습니다. 위에서 사용한 아이노드 테이블로 계산해봅시다. 아이노드 영역은 크기가 20KB이고 80개의 아이노드(각 256bytes)로 이루어져 있습니다. 아이노드 영역은 12KB 위치부터 시작합니다.</p>
+<p><img alt="image" src="../_images/image-9.jpeg" /></p>
+<p>32번 아이노드를 읽기 위해 파일 시스템은 아이노드 영역에서의 오프셋을 계산합니다. 그후 아이노드 테이블의 시작 위치를 더하면 원하는 아이노드 블럭의 정확한 바이트 주소를 계산할 수 있습니다.</p>
+<p>디스크는 바이트 단위로는 접근이 불가능하며, 대신에 512바이트 크기를 갖는 섹터로 이루어졌습니다. 32번 아이노드가 존재하는 블럭을 가져오기 위해 파일 시스템은 섹터 주소를 계산하여 읽기 요청을 한 후 해당 아이노드 블럭을 가져옵니다.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">inumber</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">inode_t</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">blockSize</span><span class="p">;</span>
+<span class="n">sector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">blk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockSize</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">inodeStartAddr</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sectorSize</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>아이노드에는 파일에 대한 정보가 다 들어있습니다. 파일의 종류, 크기, 할당된 블럭 수, 보호 정보, 시간 정보와 더불어 데이터 블럭이 디스크 어디에 존재하는지(포인터의 일종) 등과 같은 정보들이 담겨 있습니다.</p>
+<p><img alt="image" src="../_images/image-10.jpeg" /></p>
+<p>아이노드 설계시 가장 중요한 부분 중 하나는 데이터 블럭의 위치를 표현하는 방법입니다. 간단한 방법은 아이노드 내에 여러 개의 직접 포인터를 두는 것입니다. 각 포인터는 파일의 디스크 블럭 하나를 가리킵니다. 이 방법에는 파일 크기의 제한이 있습니다. 파일 크기가 포인터의 개수 <span class="math notranslate nohighlight">\(\times\)</span> 블럭 크기로 제한됩니다.</p>
+<section id="id6">
+<h3>멀티 레벨 인덱스<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>파일 크기 제한으로 인해, 파일 시스템 개발자들은 아이노드 내에 다른 자료 구조를 추가했습니다. 일반적으로는 간접 포인터를 사용합니다. 간접 포인터는 데이터 블럭을 가리키지 않고, <em>데이터 블럭을 가리키는 포인터들이 저장된 블럭을 가리킵니다.</em></p>
+<p>블럭이 4KB이고 디스크 주소가 4바이트라고 하면 1024개의 포인터들을 추가할 수 있게 됩니다. 최대 파일 크기는
+<span class="math notranslate nohighlight">\((12 + 1024) \times 4KB\)</span> 가 됩니다. 여기서 12는 정해진 수의 직접 포인터입니다.</p>
+<p>저 사이즈가 모자라면 이중, 삼중 간접 포인터를 사용하면 원하는 만큼 큰 파일을 표현할 수 있습니다.</p>
+<p>이제까지 설명한 것을 종합하면, 디스크 블럭들은 트리 형태로 구성되어 하나의 파일을 이룹니다. 이러한 구성 방식을 멀티 레벨 인덱스 기법이라 합니다.</p>
+<p>이 때 트리의 형태는 편향된 트리입니다. 파일의 시작 부분을 이루는 블럭들은 한 번의 포인터로 접근 가능하지만, 파일의 끝부분에 있는 블럭들은 포인터를 세 번 따라가야 실제 블럭을 읽을 수 있습니다. 이렇게 설계된 이유는 대부분의 파일의 크기는 작다 라는 사실에 기인한 것입니다.</p>
+</section>
+</section>
+<section id="id7">
+<h2>디렉터리 구조<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>vsfs의 디렉터리는 간단합니다. 디렉터리는 (항목의 이름, 아이노드 번호) 쌍의 배열로 구성되어 있습니다. 디렉터리의 데이터 블럭에는 문자열과 숫자가 쌍으로 존재하며 문자열 길이에 대한 정보도 있습니다.</p>
+<p>dir이라는 디렉터리 안에 foo, bar, foobar 라는 3개의 파일이 있고 각각의 아이노드 번호가 12, 13, 24라고 합시다. dir의 데이터 블럭은 아래와 같은 내용을 가지고 있을 것입니다.</p>
+<p><img alt="image" src="../_images/image-11.jpeg" /></p>
+<p>아이노드 번호, 레코드 길이(이름에 사용된 총 바이트 + 남은 공간), 이름 길이, 항목의 이름으로 이루어져 있습니다.</p>
+<p>.은 현재 디렉터리, ..은 부모 디렉터리를 가리킵니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">unlink()</span></code> 등의 호출로 파일이 삭제되면 디렉터리 중간에 빈 공간이 발생합니다. 영역이 비었다는 것을 표시할 방법이 필요합니다(ex: 아이노드 번호 0은 비었다는 뜻). 항목의 길이를 명시하는 이유 중 하나가 중간에 빈 공간이 생기기 때문입니다. 새로운 디렉터리 항목을 생성할 때 빈 공간에 위치시킬 수 있습니다.</p>
+<p>디렉터리는 대체 어디에 저장되는 걸까요? 대부분 파일 시스템에서 디렉터리는 특수한 종류의 파일로 간주합니다. 디렉터리는 자신의 아이노드를 가지며, 아 아이노드는 아이노드 테이블에 존재합니다. 디렉터리는 자신의 데이터 블럭을 가지고 있으며 이들 블럭의 위치는 일반 파일과 마찬가지로 아이노드에 명시되어 있습니다.</p>
+</section>
+<section id="id8">
+<h2>빈 공간의 관리<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p>vsfs에서는 두 개의 비트맵을 사용해서 빈 공간을 관리합니다.</p>
+<p>파일 생성 시 아이노드를 할당해야 합니다. 아이노드 비트맵을 탐색하여 비어 있는 아이노드를 찾아 파일에 할당합니다. 파일 시스템은 해당 아이노드를 사용 중 (1) 로 표기하고 디스크 비트맵도 적절히 갱신합니다. 데이터 블럭을 할당할 때도 이와 비슷합니다.</p>
+<p>데이터 블럭을 할당할 때도 고려할 사항이 있습니다. 데이터 블럭 할당 시 가능하다면 여러 개의 블럭들이 연속적으로 비어 있는 공간을 할당합니다. 이를 통해 해당 파일의 입출력 성능을 개선할 수 있습니다. 이를 <em>선할당(pre-allocation)</em> 정책이라 합니다.</p>
+</section>
+<section id="id9">
+<h2>실행 흐름 : 읽기와 쓰기<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>파일 시스템은 마운트되었고 슈퍼블럭은 메모리 상에 위치한다고 가정합시다. 다른 모든 것 (아이노드, 디렉터리)들은 디스크에 존재합니다. 메모리에는 아직 탑재되지 않았습니다</p>
+<p>디스크에서 파일 읽기
+<code class="docutils literal notranslate"><span class="pre">open(&quot;/foo/bar&quot;,</span> <span class="pre">O_RDONLY)</span></code> 시스템 콜을 하면 파일 시스템은 먼저 파일 bar에 대한 아이노드를 찾아서 파일에 대한 기본적인 정보를 획득해야 합니다. 전체 경로명을 가지고 있기 때문에 파일 시스템은 경로를 따라 원하는 아이노드를 찾습니다.</p>
+<p>경로명을 따라가는 것은 항상 파일 시스템의 루트에서 시작합니다. <code class="docutils literal notranslate"><span class="pre">/</span></code>로 표기됩니다.</p>
+<p>루트 디렉터리의 아이노드를 찾아야 합니다. 루트 디렉터리의 아이노드 번호는 보통 2로 정의되어 있습니다. 파일 시스템은 아이넘버 2가 포함된 블럭을 읽습니다.</p>
+<p>파일 시스템은 읽어들인 아이노드에서 데이터 블럭의 포인터를 추출합니다. 이 포인터들을 사용하여 디렉터리 정보를 읽고, foo 라는 항목을 찾습니다. 디렉터리에 많은 항목이 들어있으면 여러 개의 데이터 블럭이 필요할 수 있습니다. 이들을 모두 읽어서 foo를 찾아야 합니다.</p>
+<p>foo 파일의 디렉터리 항목을 찾아서, foo의 아이노드 번호를 파악합니다. 44번이라고 합시다. 이를 통해 bar에 대한 아이노드 번호도 찾아낼 수 있습니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">open()</span></code>을 통해 bar에 대한 아이노드를 메모리에 적재합니다. 파일 시스템에서는 최종적으로 해당 파일에 대한 접근 권한을 확인하고, 이 프로세스의 open file table에서 파일 디스크립터를 할당받아 사용자에게 리턴합니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">open()</span></code> 이후에는 <code class="docutils literal notranslate"><span class="pre">read()</span></code> 시스템 콜을 통해 파일을 읽습니다. 이 때 첫 번째 읽기 작업이므로 첫 번째 블럭을 읽게 될 것이고, 마지막으로 읽은 시간을 아이노드에 기록합니다. <code class="docutils literal notranslate"><span class="pre">read()</span></code>는 open file table에서 해당 파일 디스크립터에 대한 오프셋을 갱신합니다. 다음 읽기 작업을 할 때 오프셋 다음부터 읽게 할 것입니다.</p>
+<p>어느 시점이 되면 파일을 닫아야 하는데 이건 그냥 할당된 파일 디스크립터를 해제하면 됩니다. 디스크 I/O는 발생하지 않습니다.</p>
+<p>![image][./figs/image-12.jpeg]</p>
+<p>이 그림에서는 파일을 여는 과정 중에 파일의 아이노드를 찾기 위해서 여러 번의 읽기가 일어나는 것을 보여주고 있습니다. 그 뒤에 각 블럭을 읽기 위해서 파일 시스템은 먼저 아이노드를 읽고 블럭을 읽습니다. 그리고 아이노드의 마지막 접근 시간을 갱신합니다. 무슨 일이 발생하는지 다시 한 번 차분히 이해해 봅시다.</p>
+<p>I/O 발생 횟수는 경로의 길이에 비례합니다. 디렉터리가 많아지면 더 오래 걸립니다.</p>
+<section id="id10">
+<h3>디스크에 쓰기<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>디스크에 쓰기도 비슷한 과정입니다.</p>
+<p>먼저 파일을 열고, <code class="docutils literal notranslate"><span class="pre">write()</span></code>를 호출하여 새로운 내용으로 파일을 갱신합니다. 최종적으로는 파일을 닫습니다.</p>
+<p>읽기와는 다르게 파일 쓰기는 블럭 할당을 필요로 할 수 있습니다. 새로운 파일에 쓸 때는 <code class="docutils literal notranslate"><span class="pre">write()</span></code>는 데이터를 디스크에 기록해야 할 뿐만 아니라, 파일에 어느 블럭을 할당해야 할 지를 결정해야 하고, 그에 따라 데이터 비트맵, 아이노드 등을 갱신해야 합니다.</p>
+<p>그러므로 파일에 대한 쓰기 요청은 <em>논리적으로 5번의 I/O를 생성합니다.</em></p>
+<ol class="arabic simple">
+<li><p>데이터 비트맵 읽기</p></li>
+<li><p>데이터 비트맵 쓰기</p></li>
+<li><p>아이노드 읽기</p></li>
+<li><p>아이노드 쓰기</p></li>
+<li><p>실제 블럭에 기록</p></li>
+</ol>
+<p>파일 생성과 같은 단순 작업에도 많은 양의 쓰기가 발생합니다.</p>
+<ol class="arabic simple">
+<li><p>아이노드 비트맵 읽기</p></li>
+<li><p>아이노드 비트맵 쓰기</p></li>
+<li><p>아이노드 쓰기</p></li>
+<li><p>디렉터리의 데이터 블럭에 쓰기</p></li>
+<li><p>디렉터리 아이노드 읽기</p></li>
+<li><p>디렉터리 아이노드 쓰기</p></li>
+</ol>
+<p>다음은 <code class="docutils literal notranslate"><span class="pre">/foo/bar</span></code>를 생성하고 그 안에 세개의 블럭을 쓰는 과정입니다.</p>
+<p><img alt="image" src="../_images/image-13.jpeg" /></p>
+<p>파일 생성이 얼마나 대형 작업인지를 알 수 있습니다. 경로명을 따라가서 파일을 생성하는 데 10번의 I/O가 발생했습니다. 그리고 <code class="docutils literal notranslate"><span class="pre">write()</span></code> 한 번마다 5번의 I/O가 발생했습니다. 새로운 파일 블럭을 필요로 하는데 이를 <em>allocating write</em>라 합니다.</p>
+</section>
+</section>
+<section id="id11">
+<h2>캐싱과 버퍼링<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<p>I/O가 너무 많이 발생합니다. 성능 개선을 위해 대부분 파일 시스템은 자주 쓰는 블럭들을 메모리에 캐싱합니다. 가상 메모리에서 했던 것 처럼, LRU와 기타 캐시 교체 정책들을 고려해야 합니다.</p>
+<p>캐싱과 함께하는 파일 열기</p>
+<ol class="arabic simple">
+<li><p>디렉터리 아이노드와 데이터로 인해 많은 I/O 발생</p></li>
+<li><p>같은 파일을 열면 캐시에서 히트가 되기 때문에 추가 I/O 발생하지 않음</p></li>
+</ol>
+<p>캐싱과 함께하는 파일 쓰기</p>
+<ul class="simple">
+<li><p>읽기 I/O는 캐시가 충분히 크면 대부분 제거 가능</p></li>
+<li><p>메모리에 쓴 경우, 영속성을 위해 이걸 디스크로 내려 보내야 합니다.</p></li>
+<li><p>캐시는 쓰기 시점을 연기할 수 있다 -&gt; 쓰기 버퍼링</p>
+<ul>
+<li><p>다수 작업 배치 처리</p></li>
+<li><p>스케줄링</p></li>
+<li><p>만들고 바로 삭제하는 경우 아예 없던 일로 할 수 있음</p></li>
+</ul>
+</li>
+</ul>
+<p>DB 시스템 등은 버퍼링으로 발생하는 문제점을 용납하지 않습니다. 방금 입금했는데 컴퓨터가 꺼져서 디스크에 기록이 되지 않았다면? 이런 일을 피하기 위해 <code class="docutils literal notranslate"><span class="pre">fsync()</span></code>를 사용합니다. 이를 호출하면 갱신된 내용이 디스크에 강제적으로 기록됩니다. 캐시를 아예 사용하지 않도록 하는 경우도 있습니다.</p>
+</section>
+<section id="id12">
+<h2>요약<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>파일 시스템 개발에 필요한 기본 기법들을 살펴보았습니다 각 파일에 어떤 정보 (메타데이터)가 필요한지 살펴보면서 대부분은 아이노드라고 부르는 자료 구조에 저장한다는 것을 보았습니다. 디렉터리는 특수 파일로서 파일 이름과 아이노드 번호 간의 연결정보를 저장합니다. 다른 자료 구조들이 더 있습니다. 예를 들면 파일 시스템은 아이노드나 데이터 블럭의 할당과 해제 여부를 나타내는 비트맵과 같은 정보를 갖고 있습니다.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="ypilseong" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/ypilseong">양필성</a></p>
+</aside>
+</aside>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./week14"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data-integrity.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">데이터 무결성과 보호</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="summary.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">영속성을 정리하는 대화</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">생각하는 방법</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">전체 구성</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">파일 구성 : 아이노드</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">멀티 레벨 인덱스</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">디렉터리 구조</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">빈 공간의 관리</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">실행 흐름 : 읽기와 쓰기</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">디스크에 쓰기</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">캐싱과 버퍼링</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">요약</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

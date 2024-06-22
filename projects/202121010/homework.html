@@ -1,0 +1,1658 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Homework &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'projects/202121010/homework';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="프로젝트: Key-Value Store 구현" href="../202221014/index.html" />
+    <link rel="prev" title="Key-Value store project by ypilseong" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week02/index.html">Week 2 - 가상화의 세계</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/cpu-mechanisms.html">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week02/hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week03/index.html">Week 3 - 스케줄링 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week03/cpu-scheduling.html">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week03/lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week03/wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week03/hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week09/index.html">Week 9 - 메모리 가상화 4</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week09/vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week09/vm-tlbs.html">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week09/vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week09/summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week14/index.html">Week 14 - 영속성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week14/data-integrity.html">데이터 무결성과 보호</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week14/fs-implementation.html">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week14/summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">OS 프로젝트</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Key-Value store project by ypilseong</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/projects/202121010/homework.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fprojects/202121010/homework.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/projects/202121010/homework.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-1">week 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-2">week 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-4">week 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-6">week 6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-7">week 7</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="homework">
+<h1>Homework<a class="headerlink" href="#homework" title="Link to this heading">#</a></h1>
+<p><strong>202121010 양필성</strong></p>
+<section id="week-1">
+<h2>week 1<a class="headerlink" href="#week-1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>다음 플래그와 함께 <code class="docutils literal notranslate"><span class="pre">process-run.py</span></code>를 실행하세요: <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">5:100,5:100</span></code>. CPU 활용률(예: CPU가 사용 중인 시간의 백분율)은 어떻게 되어야 할까요? 왜 그렇게 알 수 있나요? <code class="docutils literal notranslate"><span class="pre">-c</span></code>와 <code class="docutils literal notranslate"><span class="pre">-p</span></code> 플래그를 사용해 여러분의 생각이 맞는지 확인해 보세요.</p>
+<ul class="simple">
+<li><p>Answer: pid:0 process가 5개의 명령어를 처리할 동안 pid:1 process는 Ready 상태를 가진다. pid:0 process의 상태가 Done을 가지면 pid:1 process의 상태가 Run으로 바뀌며 CPU 사용을 한다. pid:1 process 또한 5개의 명령어를 처리해야한다. 따라서 CPU 활용률은 process 각각 50%씩 사용한다.</p></li>
+</ul>
+</li>
+<li><p>이제 다음 플래그로 실행해 보세요: <code class="docutils literal notranslate"><span class="pre">./process-run.py</span> <span class="pre">-l</span> <span class="pre">4:100,1:0</span></code>. 이 플래그는 4개의 명령어(모두 CPU 사용)를 가진 하나의 프로세스와 I/O를 실행하고 완료될 때까지 기다리는 하나의 프로세스를 지정합니다. 두 프로세스를 모두 완료하는 데 얼마나 걸리나요? <code class="docutils literal notranslate"><span class="pre">-c</span></code>와 <code class="docutils literal notranslate"><span class="pre">-p</span></code>를 사용해 여러분의 생각이 맞는지 확인해 보세요.</p>
+<ul class="simple">
+<li><p>Answer: 11</p></li>
+</ul>
+</li>
+<li><p>프로세스의 순서를 바꿔 보세요: <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">1:0,4:100</span></code>. 이제 어떻게 되나요? 순서를 바꾸는 것이 중요한가요? 왜 그런가요? (항상 그렇듯이 <code class="docutils literal notranslate"><span class="pre">-c</span></code>와 <code class="docutils literal notranslate"><span class="pre">-p</span></code>를 사용해 여러분의 생각이 맞는지 확인해 보세요)</p>
+<ul class="simple">
+<li><p>Answer: 두 프로세스를 모두 완료하는 시간이 줄었다. PID:0 process가 io를 기다려 CPU를 사용하지 않는 BLOCKED 상태로 바뀐다. PID:1 process가 PID:0 process BLOCKED 상태일 때 CPU를 사용할 수 있어 총 반환시간이 짧아진다.</p></li>
+</ul>
+</li>
+<li><p>이제 다른 플래그들을 살펴보겠습니다. 중요한 플래그 중 하나는 <code class="docutils literal notranslate"><span class="pre">-S</span></code>인데, 이는 프로세스가 I/O를 실행할 때 시스템이 어떻게 반응하는지 결정합니다. 플래그를 <code class="docutils literal notranslate"><span class="pre">SWITCH_ON_END</span></code>로 설정하면 한 프로세스가 I/O를 수행하는 동안 시스템은 다른 프로세스로 전환하지 않고 해당 프로세스가 완전히 끝날 때까지 기다립니다. 다음 두 프로세스를 실행할 때 어떤 일이 일어나나요(<code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">1:0,4:100</span> <span class="pre">-c</span> <span class="pre">-S</span> <span class="pre">SWITCH_ON_END</span></code>), 하나는 I/O를 수행하고 다른 하나는 CPU 작업을 수행합니다?</p>
+<ul class="simple">
+<li><p>Answer: PID:0 process가 io를 기다려 CPU를 사용하지 않는 BLOCKED 상태로 바뀜에도 PID:1 process가 CPU를 사용하지 않는다. 이로인해 총 반환시간이 늘어났다.</p></li>
+</ul>
+</li>
+<li><p>이제 같은 프로세스를 실행하되, 한 프로세스가 I/O를 기다리는(<code class="docutils literal notranslate"><span class="pre">WAITING</span></code>) 동안 다른 프로세스로 전환되도록 switching 동작을 설정해 봅시다(<code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">1:0,4:100</span> <span class="pre">-c</span> <span class="pre">-S</span> <span class="pre">SWITCH_ON_IO</span></code>). 이제 어떤 일이 일어나나요? <code class="docutils literal notranslate"><span class="pre">-c</span></code>와 <code class="docutils literal notranslate"><span class="pre">-p</span></code>를 사용해 여러분의 생각이 맞는지 확인해 보세요.</p>
+<ul class="simple">
+<li><p>Answer: PID:0 process가 io를 기다려 CPU를 사용하지 않는 BLOCKED 상태로 바뀌어 PID:1 process가 CPU를 사용한다. 이로인해 총 반환시간이 줄어들었다.</p></li>
+</ul>
+</li>
+<li><p>또 다른 중요한 동작은 I/O가 완료될 때 수행할 작업입니다. <code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_LATER</span></code>를 사용하면 I/O가 완료될 때 그것을 실행한 프로세스가 반드시 즉시 실행되는 것은 아닙니다. 오히려 그 시점에 실행 중이던 프로세스가 계속 실행됩니다. 이러한 프로세스 조합을 실행하면 어떤 일이 일어나나요? (<code class="docutils literal notranslate"><span class="pre">./process-run.py</span> <span class="pre">-l</span> <span class="pre">3:0,5:100,5:100,5:100</span> <span class="pre">-S</span> <span class="pre">SWITCH_ON_IO</span> <span class="pre">-I</span> <span class="pre">IO_RUN_LATER</span> <span class="pre">-c</span> <span class="pre">-p</span></code>) 시스템 자원이 효율적으로 활용되고 있나요?</p>
+<ul class="simple">
+<li><p>Answer: PID:0 process가 첫번째 io 명령어를 처리하는 동안 CPU를 사용하지 않아 PID:1 process가 CPU를 사용한다. 하지만 PID:0 process가 io 명령어를 다 처리해도 READY 상태로 바뀐다. PID:2, PID:3 process가 모두 실행되고 나서 PID:0 process의 첫번째 io 명령어가 끝나고 나머지 두번의 io 명령어를 연달아 실행한다. 하지만 두번째, 세번째 io 명령어를 처리하는 동안 CPU는 사용하지 않는다. 따라서 효율적이지 않다.</p></li>
+</ul>
+</li>
+<li><p>이제 같은 프로세스를 실행하되, <code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_IMMEDIATE</span></code>를 설정해 I/O를 실행한 프로세스를 즉시 실행하도록 해 봅시다. 이 동작은 어떻게 다른가요? 방금 I/O를 완료한 프로세스를 다시 실행하는 것이 왜 좋은 생각일 수 있을까요?</p>
+<ul class="simple">
+<li><p>Answer: PID:0 process가 첫번째 io 명령어를 처리하는 동안 3개의 프로세스를 처리하지 않는다, PID:0 process가 READY 상태로 바뀌지 않고 각 io 명령어마다 다른 프로세스들이 CPU를 사용함으로써 효율적으로 바뀌었다.</p></li>
+</ul>
+</li>
+<li><p>이제 무작위로 생성된 프로세스로 실행해 봅시다: <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">1</span> <span class="pre">-l</span> <span class="pre">3:50,3:50</span></code> 또는 <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">2</span> <span class="pre">-l</span> <span class="pre">3:50,3:50</span></code> 또는 <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">3</span> <span class="pre">-l</span> <span class="pre">3:50,3:50</span></code>. 추적 결과가 어떻게 될지 예측해 보세요. <code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_IMMEDIATE</span></code> 플래그와 <code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_LATER</span></code> 플래그를 사용할 때 어떤 일이 일어나나요? <code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">SWITCH_ON_IO</span></code>와 <code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">SWITCH_ON_END</span></code>를 사용할 때 어떤 일이 일어나나요?</p>
+<ul class="simple">
+<li><p>Answer:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_IMMEDIATE</span></code> 플래그와 <code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">IO_RUN_LATER</span></code> 플래그 효율성은 <code class="docutils literal notranslate"><span class="pre">IO_RUN_IMMEDIATE</span></code> 플래그가 더 효율성이 좋았다. 프로세스가 io 명령어 처리를 끝내고 READY 상태를 최대한 짧게 가지며 프러세스를 끝내고 그 다음 io 명령어를 시작하며 다른 프로세스가 CPU를 사용할 수 있게 했다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">SWITCH_ON_IO</span></code> 플래그와 <code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">SWITCH_ON_END</span></code> 플래그 효율성은 <code class="docutils literal notranslate"><span class="pre">SWITCH_ON_IO</span></code> 플래그가 더 효율성이 좋았다. 프로세스가 CPU를 사용하지 않는 BLOCKED 상태에 다른 프로세스가 CPU를 사용할 수 있기 떄문이다.</p></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="week-2">
+<h2>week 2<a class="headerlink" href="#week-2" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>SJF와 FIFO 스케줄러로 길이가 200인 세 개의 작업을 실행할 때의 응답 시간과 반환 시간을 계산하세요.</p>
+<ul>
+<li><p>Answer</p>
+<ol class="arabic">
+<li><p>SJF</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>200</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>200</p></td>
+<td class="text-center"><p>400</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>400</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p>FIFO</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>200</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>200</p></td>
+<td class="text-center"><p>400</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>400</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>이제 작업의 길이를 다르게 하여 동일한 작업을 수행해 보세요: 100, 200, 300.</p>
+<ul>
+<li><p>Answer</p>
+<ol class="arabic">
+<li><p>SJF</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>100</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>100</p></td>
+<td class="text-center"><p>300</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>300</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p>FIFO</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>100</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>100</p></td>
+<td class="text-center"><p>300</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>300</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>이제 RR 스케줄러와 시간 할당량(time-slice)을 1로 하여 동일한 작업을 수행해 보세요.</p>
+<ul>
+<li><p>Answer</p>
+<ul>
+<li><p>RR -&gt; same len</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>598</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>599</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>2</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p>RR -&gt; different len</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Job number</p></th>
+<th class="head text-center"><p>Response Time</p></th>
+<th class="head text-center"><p>Turnaround Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Job 0</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>298</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Job 1</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>499</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Job 2</p></td>
+<td class="text-center"><p>2</p></td>
+<td class="text-center"><p>600</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>어떤 유형의 워크로드에 대해 SJF가 FIFO와 동일한 반환 시간을 제공하나요?</p>
+<ul class="simple">
+<li><p>Answer: 짧은 순서로 도착하거나 동일한 길이의 작업이면 SJF와 FIFO는 동일한 반환 시간을 갖는다.</p></li>
+</ul>
+</li>
+<li><p>어떤 유형의 워크로드와 시간 할당량에 대해 SJF가 RR과 동일한 응답 시간을 제공하나요?</p>
+<ul class="simple">
+<li><p>Answer: 작업의 길이가 시간 할당량보다 짧거나 같을 때이다. 이 경우, SJF나 RR이나 모든 작업이 최초의 시간 할당량에서 한 번에 처리되므로 응답 시간이 동일하다.</p></li>
+</ul>
+</li>
+<li><p>작업 길이가 증가함에 따라 SJF에서 응답 시간은 어떻게 되나요? 시뮬레이터를 사용하여 이 추세를 보여줄 수 있나요?</p>
+<ul class="simple">
+<li><p>Answer: 작업의 길이가 증가함에 따라 응답시간은 일반적으로 증가한다. 작업 길이가 긴 작업이 뒤로 밀리기 때문에, 짧은 작업이 우선적으로 처리되고, 그 다음 긴 작업이 대기 시간을 더 가지게 된다.</p></li>
+</ul>
+</li>
+<li><p>시간 할당량이 증가함에 따라 RR에서 응답 시간은 어떻게 되나요? N개의 작업이 주어졌을 때 최악의 응답 시간을 제공하는 수식을 작성할 수 있나요?</p>
+<ul class="simple">
+<li><p>Answer: 시간 할당량이 증가함에 따라 응답 시간은 일반적으로 증가한다. 최악의 응답 시간 = (N-1)*(시간 할당량).</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="week-4">
+<h2>week 4<a class="headerlink" href="#week-4" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>3개의 작업과 난수 시드 1, 2, 3으로 시뮬레이션한 솔루션을 계산하세요.</p>
+<ul>
+<li><p>Answer</p>
+<ol class="arabic simple">
+<li><p>seed = 1</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">651593</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">119</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">153</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:84<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">788724</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">153</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:84<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">2</span>
+Random<span class="w"> </span><span class="m">93859</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">19</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">69</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">28347</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">57</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">69</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">835765</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">37</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">69</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">432767</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">68</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">69</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:1<span class="w"> </span>tix:44<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">2</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">6</span>
+Random<span class="w"> </span><span class="m">762280</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">2106</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:5<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">445387</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:4<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">721540</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:3<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">228762</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">945271</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">21</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">25</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:25<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">12</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>seed = 2</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">605944</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">169</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:9<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">606802</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:9<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:5<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">581204</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">54</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:8<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:5<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">158383</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">192</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:7<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:5<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">430670</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:7<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">393532</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">123</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:6<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">723012</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">22</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:6<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">994820</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">167</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:5<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">949396</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">53</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:5<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">544177</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">63</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:4<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">444854</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:3<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">268241</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">124</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">35924</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">70</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">27444</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">61</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">197</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:94<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">14</span>
+Random<span class="w"> </span><span class="m">464894</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">55</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">318465</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">92</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:5<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">380015</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">48</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:5<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">891790</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:4<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">525753</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">41</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:3<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">560510</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">87</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">236123</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">47</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:1<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">23858</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">65</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">103</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:73<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:1<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">22</span>
+Random<span class="w"> </span><span class="m">325143</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">30</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:1<span class="w"> </span>tix:30<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">2</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">23</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>seed = 3</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">13168</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">120</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:54<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:3<span class="w"> </span>tix:60<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">837469</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">109</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">120</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:54<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:60<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">259354</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">34</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">120</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:54<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:60<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">234331</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">91</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">120</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:54<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:60<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">4</span>
+Random<span class="w"> </span><span class="m">995645</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">60</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:54<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">5</span>
+Random<span class="w"> </span><span class="m">470263</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:6<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">836462</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:5<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">476353</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:4<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">639068</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:3<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">150616</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:2<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">634861</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">2</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:2<span class="w"> </span>timeleft:1<span class="w"> </span>tix:6<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">2</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">11</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>이제 두 개의 특정 작업으로 실행해 보세요: 각각 길이는 10이지만 하나(작업 0)는 티켓이 1장이고 다른 하나(작업 1)는 100장입니다(예: <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">10:1,10:100</span></code>). 티켓의 수가 이렇게 불균형할 때 어떤 일이 일어날까요? 작업 1이 완료되기 전에 작업 0이 실행될 수 있을까요? 얼마나 자주 그럴까요? 일반적으로 이러한 티켓 불균형이 복권 스케줄링의 동작에 어떤 영향을 미칠까요?</p>
+<ul>
+<li><p>Answer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">134364</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">34</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:10<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">847434</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">44</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:9<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">763775</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:8<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">255069</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">44</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:7<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">495435</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:6<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">449491</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">41</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:5<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">651593</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">788724</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:3<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">93859</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">28347</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">67</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">101</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">10</span>
+Random<span class="w"> </span><span class="m">835765</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">432767</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:9<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">762280</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:8<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">2106</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:7<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">445387</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:6<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">721540</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:5<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">228762</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:4<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">945271</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:3<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">901428</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">30590</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:1<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">20</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>이러한 유형의 작업을 하게되면 일방적으로 티켓수가 비교적 많은 작업이 빨리 끝난다. 이와 같은 예시처럼 극단적으로 차이가 많이 난다면 티켓수가 낮은 작업은 높은 확률로 작업을 하지 못하는 상태로 있는다. 티켓이 많은 작업이 끝난 후에 작업이 시작될 것이다. 이러한 티켓 불균형은 자원을 받는 것이 공평하게 흘러가지 않아 티켓 수가 낮은 작업은 반환 시간이 더 길어질 것이다.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>길이가 100이고 티켓 할당이 100으로 동일한 두 개의 작업(<code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">100:100,100:100</span></code>)으로 실행할 때 스케줄러는 얼마나 불공정할까요? 몇 가지 다른 난수 시드로 실행하여 (확률적) 답을 결정하세요; 한 작업이 다른 작업보다 얼마나 일찍 끝나는지에 따라 불공정성이 결정됩니다.</p>
+<ul>
+<li><p>Answer</p>
+<ol class="arabic simple">
+<li><p>seed = 1</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">134364</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">164</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">847434</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">34</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:99<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+...
+Random<span class="w"> </span><span class="m">194118</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">118</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">196</span>
+Random<span class="w"> </span><span class="m">104424</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">665958</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">58</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:3<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">296072</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">72</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">499800</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">200</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>seed = 2</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">956035</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">35</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">947828</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:99<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+...
+Random<span class="w"> </span><span class="m">511501</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">190</span>
+Random<span class="w"> </span><span class="m">581076</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">76</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:10<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">51234</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">34</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:9<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">418016</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:8<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">525065</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">65</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:7<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">181225</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:6<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">93786</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">86</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:5<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">802656</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">56</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">366184</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">84</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:3<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">519210</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">921451</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">51</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">200</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>seed = 3</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">237964</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">164</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">544229</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:99<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span>
+
+...
+
+Random<span class="w"> </span><span class="m">662987</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">187</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:5<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">519015</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">196</span>
+Random<span class="w"> </span><span class="m">289042</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:4<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">341069</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">69</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:3<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">227466</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">66</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:2<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">68067</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">67</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">200</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>seed = 4</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>**<span class="w"> </span>Solutions<span class="w"> </span>**
+
+Random<span class="w"> </span><span class="m">236048</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">48</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">103166</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">166</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:99<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:100<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span>
+Random<span class="w"> </span><span class="m">488831</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">31</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:2<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+Random<span class="w"> </span><span class="m">864720</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">120</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">200</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">1</span>
+Jobs:
+<span class="o">(</span><span class="w">  </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span>*<span class="w"> </span>job:1<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">1</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">199</span>
+Random<span class="w"> </span><span class="m">608125</span><span class="w"> </span>-&gt;<span class="w"> </span>Winning<span class="w"> </span>ticket<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="o">(</span>of<span class="w"> </span><span class="m">100</span><span class="o">)</span><span class="w"> </span>-&gt;<span class="w"> </span>Run<span class="w"> </span><span class="m">0</span>
+Jobs:
+<span class="o">(</span>*<span class="w"> </span>job:0<span class="w"> </span>timeleft:1<span class="w"> </span>tix:100<span class="w"> </span><span class="o">)</span><span class="w">  </span><span class="o">(</span><span class="w">  </span>job:1<span class="w"> </span>timeleft:0<span class="w"> </span>tix:---<span class="w"> </span><span class="o">)</span><span class="w"> </span>
+--&gt;<span class="w"> </span>JOB<span class="w"> </span><span class="m">0</span><span class="w"> </span>DONE<span class="w"> </span>at<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="m">200</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Seed number</p></th>
+<th class="head text-center"><p>Job 0 time</p></th>
+<th class="head text-center"><p>Job 1 time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>200</p></td>
+<td class="text-center"><p>196</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>200</p></td>
+<td class="text-center"><p>190</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>196</p></td>
+<td class="text-center"><p>200</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>200</p></td>
+<td class="text-center"><p>199</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>결론: 몇가지 난수 시드를 통해 결과를 확인 한 결과 작업 1번이 작업 0번에 비해 2번 더 빨리 끝난 것을 알 수 있었다. 2번 시드 같은 경우에는 다른 시드들 보다 더 많은 차이가 난 것을 알 수 있었다.</p>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="week-6">
+<h2>week 6<a class="headerlink" href="#week-6" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>시드 1, 2, 3으로 실행하고 프로세스에서 생성된 각 가상 주소가 범위 내에 있는지 또는 범위를 벗어났는지 계산하세요. 범위 내라면 변환을 계산하세요.</p>
+<ul>
+<li><p>Answer</p>
+<ol class="arabic simple">
+<li><p>seed = 1</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x0000363c<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">13884</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">290</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x0000030e<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">782</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x00000105<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">261</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x000001fb<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">507</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x000001cc<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">460</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x0000029b<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">667</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+</pre></div>
+</div>
+<p>VA 0~4번중 Limit을 넘지 않는 것은 VA 1번만 있으므로 VA 1번은 VALID: (decimal: 14145) 나올 것이며 나머지는 segmentation violation이 나올 것이다.</p>
+<ol class="arabic simple" start="2">
+<li><p>seed = 2</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x00003ca9<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">15529</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">500</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x00000039<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">57</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x00000056<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">86</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x00000357<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">855</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x000002f1<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">753</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x000002ad<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">685</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+</pre></div>
+</div>
+<p>VA 0~4번중 Limit을 넘지 않는 것은 VA 0번과 1번만 있으므로 VA 0번은 VALID: (decimal: 15586), VA 1번은  VALID: (decimal: 15615)가  나올 것이며 나머지는 segmentation violation이 나올 것이다.</p>
+<ol class="arabic simple" start="3">
+<li><p>seed = 3</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x000022d4<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">8916</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">316</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x0000017a<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">378</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x0000026a<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">618</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x00000280<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">640</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x00000043<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">67</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x0000000d<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">13</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+</pre></div>
+</div>
+<p>VA 0~4번중 Limit을 넘지 않는 것은 VA 3번과 4번만 있으므로 VA 3번은 VALID: (decimal: 8983), VA 4번은  VALID: (decimal: 8929)가  나올 것이며 나머지는 segmentation violation이 나올 것이다.</p>
+</li>
+</ul>
+</li>
+<li><p>다음 플래그로 실행하세요: <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">0</span> <span class="pre">-n</span> <span class="pre">10</span></code>. 생성된 모든 가상 주소가 범위 내에 있도록 하려면 <code class="docutils literal notranslate"><span class="pre">-l</span></code>(한계 레지스터)을 어떤 값으로 설정해야 할까요?</p>
+<ul class="simple">
+<li><p>Answer</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x00003082<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">12418</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">472</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x000001ae<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">430</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x00000109<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">265</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x0000020b<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">523</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x0000019e<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">414</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x00000322<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">802</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">5</span>:<span class="w"> </span>0x00000136<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">310</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">6</span>:<span class="w"> </span>0x000001e8<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">488</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">7</span>:<span class="w"> </span>0x00000255<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">597</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">8</span>:<span class="w"> </span>0x000003a1<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">929</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">9</span>:<span class="w"> </span>0x00000204<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">516</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+</pre></div>
+</div>
+<p>VA 0~9번중 decimal 숫자가 가장 큰 것은 <code class="docutils literal notranslate"><span class="pre">VA</span> <span class="pre">8:</span> <span class="pre">(decimal:</span> <span class="pre">929)</span></code>이기 때문에 <code class="docutils literal notranslate"><span class="pre">-l</span></code>(한계 레지스터)을  929 숫자로 해야한다.</p>
+</li>
+<li><p>다음 플래그로 실행하세요: <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">1</span> <span class="pre">-n</span> <span class="pre">10</span> <span class="pre">-l</span> <span class="pre">100</span></code>. 주소 공간이 여전히 물리 메모리에 전체적으로 맞도록 기준을 설정할 수 있는 최대값은 얼마인가요?</p>
+<ul>
+<li><p>Answer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ARG<span class="w"> </span>seed<span class="w"> </span><span class="m">1</span>
+ARG<span class="w"> </span>address<span class="w"> </span>space<span class="w"> </span>size<span class="w"> </span>1k
+ARG<span class="w"> </span>phys<span class="w"> </span>mem<span class="w"> </span>size<span class="w"> </span>16k
+
+Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x00000899<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">2201</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">100</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x00000363<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">867</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x0000030e<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">782</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x00000105<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">261</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x000001fb<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">507</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x000001cc<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">460</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">5</span>:<span class="w"> </span>0x0000029b<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">667</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">6</span>:<span class="w"> </span>0x00000327<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">807</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">7</span>:<span class="w"> </span>0x00000060<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">96</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">8</span>:<span class="w"> </span>0x0000001d<span class="w"> </span><span class="o">(</span>decimal:<span class="w">   </span><span class="m">29</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+VA<span class="w">  </span><span class="m">9</span>:<span class="w"> </span>0x00000357<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">855</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>PA<span class="w"> </span>or<span class="w"> </span>segmentation<span class="w"> </span>violation?
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">phys</span> <span class="pre">mem</span> <span class="pre">size</span></code>를 통해 알 수 있듯이 물리적 메모리에 값은 16k(16,384)이다. 물리적 메모리가 최대 기준값을 가지려면 물리적 <code class="docutils literal notranslate"><span class="pre">(물리적</span> <span class="pre">메모리</span> <span class="pre">-</span> <span class="pre">한계</span> <span class="pre">레지스터)</span></code>를 하면 값을 구할 수 있다. 따라서 최대 기준값은 16,284이다.</p>
+</li>
+</ul>
+</li>
+<li><p>위와 동일한 문제 중 일부를 실행해 보세요. 단, 더 큰 주소 공간(<code class="docutils literal notranslate"><span class="pre">-a</span></code>)과 물리 메모리(<code class="docutils literal notranslate"><span class="pre">-p</span></code>)를 사용하세요.</p>
+<ul>
+<li><p>Answer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ARG<span class="w"> </span>seed<span class="w"> </span><span class="m">1</span>
+ARG<span class="w"> </span>address<span class="w"> </span>space<span class="w"> </span>size<span class="w"> </span>16k
+ARG<span class="w"> </span>phys<span class="w"> </span>mem<span class="w"> </span>size<span class="w"> </span>128k
+
+Base-and-Bounds<span class="w"> </span>register<span class="w"> </span>information:
+
+Base<span class="w">   </span>:<span class="w"> </span>0x0001b1e2<span class="w"> </span><span class="o">(</span>decimal<span class="w"> </span><span class="m">111074</span><span class="o">)</span>
+Limit<span class="w">  </span>:<span class="w"> </span><span class="m">4646</span>
+
+Virtual<span class="w"> </span>Address<span class="w"> </span>Trace
+VA<span class="w">  </span><span class="m">0</span>:<span class="w"> </span>0x000030e1<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">12513</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">1</span>:<span class="w"> </span>0x00001053<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">4179</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>VALID:<span class="w"> </span>0x0001c235<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">115253</span><span class="o">)</span>
+VA<span class="w">  </span><span class="m">2</span>:<span class="w"> </span>0x00001fb5<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">8117</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">3</span>:<span class="w"> </span>0x00001cc4<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">7364</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">4</span>:<span class="w"> </span>0x000029b3<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">10675</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">5</span>:<span class="w"> </span>0x0000327a<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">12922</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">6</span>:<span class="w"> </span>0x00000601<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">1537</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>VALID:<span class="w"> </span>0x0001b7e3<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">112611</span><span class="o">)</span>
+VA<span class="w">  </span><span class="m">7</span>:<span class="w"> </span>0x000001d0<span class="w"> </span><span class="o">(</span>decimal:<span class="w">  </span><span class="m">464</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>VALID:<span class="w"> </span>0x0001b3b2<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">111538</span><span class="o">)</span>
+VA<span class="w">  </span><span class="m">8</span>:<span class="w"> </span>0x0000357d<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">13693</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+VA<span class="w">  </span><span class="m">9</span>:<span class="w"> </span>0x00001bb2<span class="w"> </span><span class="o">(</span>decimal:<span class="w"> </span><span class="m">7090</span><span class="o">)</span><span class="w"> </span>--&gt;<span class="w"> </span>SEGMENTATION<span class="w"> </span>VIOLATION
+</pre></div>
+</div>
+<p>결론: 앞서 진행했던 작업들과 비슷한 상황이 나타났다. VA 0~9번중 VA 1,6,7번 만 유효한 변화가 이뤄졌다. 이러한 결과를 통해 알 수 있는 사실은 물리적 메모리의 크기, 주소 공간의 주소는 복잡성이 증가하지만 유효한 변화에 큰 영향을 끼치지 않는다. <strong>한계 레지스터</strong>가 중요한 영향을 끼친다는 사실을 알 수 있다. 만약 한계 레지스터의 크기가 작다면 많은 가상 주소에 대한 변환이 원활하게 이뤄지지 않을 것으로 생각된다.</p>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="week-7">
+<h2>week 7<a class="headerlink" href="#week-7" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>먼저 <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">10</span> <span class="pre">-H</span> <span class="pre">0</span> <span class="pre">-p</span> <span class="pre">BEST</span> <span class="pre">-s</span> <span class="pre">0</span></code> 플래그로 실행하여 몇 개의 무작위 할당과 해제를 생성하세요. alloc()/free()가 무엇을 반환할지 예측할 수 있나요? 각 요청 후에 프리 리스트의 상태를 추측할 수 있나요? 시간이 지남에 따라 프리 리스트에서 무엇을 알 수 있나요?</p>
+<ul>
+<li><p>Answer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ptr<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">1000</span><span class="w"> </span>
+List?<span class="w"> </span>-&gt;<span class="w"> </span>size<span class="w"> </span><span class="m">1</span><span class="w"> </span>:<span class="w"> </span><span class="o">[</span>addr:1003<span class="w"> </span>sz:97<span class="o">]</span>
+
+Free<span class="o">(</span>ptr<span class="o">[</span><span class="m">0</span><span class="o">])</span>
+returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">0</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">2</span><span class="w"> </span>:<span class="w"> </span><span class="o">[</span>addr:1000<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:97<span class="o">]</span>
+
+ptr<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">1003</span><span class="w"> </span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">2</span><span class="w"> </span>:<span class="w"> </span><span class="o">[</span>addr:1000<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1008<span class="w"> </span>sz:92<span class="o">]</span>
+
+Free<span class="o">(</span>ptr<span class="o">[</span><span class="m">1</span><span class="o">])</span>
+returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">0</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">3</span>:<span class="w"> </span><span class="o">[</span>addr:1000<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1008<span class="w"> </span>sz:92<span class="o">]</span>
+
+ptr<span class="o">[</span><span class="m">2</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">8</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span><span class="m">1008</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">3</span>:<span class="w"> </span><span class="o">[</span>addr:1000<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+
+Free<span class="o">(</span>ptr<span class="o">[</span><span class="m">2</span><span class="o">])</span>
+returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">0</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">4</span>:<span class="w"> </span><span class="o">[</span>addr:100<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1008<span class="w"> </span>sz:8<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+
+ptr<span class="o">[</span><span class="m">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">8</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">1008</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">3</span>:<span class="w"> </span><span class="o">[</span>addr:1000<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+
+Free<span class="o">(</span>ptr<span class="o">[</span><span class="m">3</span><span class="o">])</span>
+returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">0</span>
+List?<span class="w">  </span>size<span class="w"> </span><span class="m">4</span>:<span class="w"> </span><span class="o">[</span>addr:100<span class="w"> </span>sz:3<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1008<span class="w"> </span>sz:8<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+
+ptr<span class="o">[</span><span class="m">4</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">1000</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">4</span>:<span class="w"> </span><span class="o">[</span>addr:1002<span class="w"> </span>sz:1<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1008<span class="w"> </span>sz:8<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+
+
+ptr<span class="o">[</span><span class="m">5</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Alloc<span class="o">(</span><span class="m">7</span><span class="o">)</span><span class="w"> </span>returned<span class="w"> </span>?<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">1008</span>
+List?<span class="w"> </span>size<span class="w"> </span><span class="m">4</span>:<span class="w"> </span><span class="o">[</span>addr:1002<span class="w"> </span>sz:1<span class="o">]</span>,<span class="o">[</span>addr:1003<span class="w"> </span>sz:5<span class="o">]</span>,<span class="o">[</span>addr:1015<span class="w"> </span>sz:1<span class="o">]</span>,<span class="o">[</span>addr:1016<span class="w"> </span>sz:84<span class="o">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>3바이트 크기의 블록, 헤더값 0이므로 <code class="docutils literal notranslate"><span class="pre">1000번</span></code> 주소에 할당
+-&gt; size는 <code class="docutils literal notranslate"><span class="pre">1000~1002번</span></code>까지 블록이 있으므로 free list는 나머지 <code class="docutils literal notranslate"><span class="pre">1003부터</span> <span class="pre">97개</span></code>만큼 남음</p></li>
+<li><p>3바이트 크기의 블록을 반환 -&gt; <code class="docutils literal notranslate"><span class="pre">1000~1002번</span></code>에 있던 블록이 사라져 모두 비었지만 다시 초기상태로 돌아가지 못하기 때문에 free list는 두개</p></li>
+<li><p>5바이트 크기의 블록은 <code class="docutils literal notranslate"><span class="pre">1000~1002번</span></code> 블록에는 못 들어가기 때문에 바로 다음 곳인 <code class="docutils literal notranslate"><span class="pre">1003번</span></code>으로 할당
+-&gt; 사이즈는 1000~1002번 블록과 할당된 블록을 뺸 나머지</p></li>
+<li><p>5바이트 크기의 블록을 반환 -&gt; <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">=</span> <span class="pre">1000~1002번,</span> <span class="pre">1003~1007번(5바이트</span> <span class="pre">블록</span> <span class="pre">할당됐던</span> <span class="pre">곳),</span> <span class="pre">두개의</span> <span class="pre">블록을</span> <span class="pre">뺸</span> <span class="pre">나머지</span></code></p></li>
+<li><p>8바이트 크기의 블록은 앞서 진행한 블록들보다 크기가 크므로 새로운 곳에 할당</p></li>
+<li><p>free list가 3개였지만 8바이트 블록이 새로운 곳으로 할당 받았다 반환했기 때문에 4개</p></li>
+<li><p>8바이트 크기의 블록이 앞서 진행한 블록과 크기가 같으므로 같은 주소에 할당</p></li>
+<li><p>바이트 크기가 같으므로 반환 후 free list도 동일</p></li>
+<li><p>2바이트 크기의 블록은 처음 진행한 3바이트 블록보다 작아 <code class="docutils literal notranslate"><span class="pre">1000~1002번</span></code> free list 요소에 들어갈 수 있음</p></li>
+<li><p>7바이트 크기의 블록 또한 8바이트 크기보다 작아 <code class="docutils literal notranslate"><span class="pre">1008~1014번</span></code> free list 요소에 들어갈 수 있음</p></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>프리 리스트를 검색할 때 최악 적합(Worst-fit) 정책(<code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">WORST</span></code>)을 사용하면 결과가 어떻게 달라지나요? 무엇이 바뀌나요?</p>
+<ul class="simple">
+<li><p>Answer : free list 요소에 할당할 수 있음에도 가장 큰 곳으로 할당을 받아 free list에 정해진 길이의 요소들이 늘어난다.</p></li>
+</ul>
+</li>
+<li><p>최선 적합(First-fit) 정책(<code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">FIRST</span></code>)은 어떤가요? 최선 적합을 사용하면 무엇이 빨라지나요?</p>
+<ul class="simple">
+<li><p>Answer : 최선 적합은 <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">BEST</span></code> 와 다르게 적합한 블록을 찾은 후 가장 작은 블록을 찾는 것이 아니라 요청보다 큰 첫번 째 블록을 찾아 바로 할당을 한다. 이로써 빈 공간 리스트를 계속 탐색할 이유가 없어 속도가 빠르다.</p></li>
+</ul>
+</li>
+<li><p>위의 질문들에서, 리스트를 어떤 순서로 유지하느냐에 따라 일부 정책의 자유 블록 탐색 시간이 달라질 수 있습니다. 다양한 프리 리스트 순서(<code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">ADDRSORT,-l</span> <span class="pre">SIZESORT+,-l</span> <span class="pre">SIZESORT-</span></code>)를 사용하여 정책과 리스트 순서가 어떻게 상호작용하는지 확인하세요.</p>
+<ul class="simple">
+<li><p>Answer : 최선 적합(First-fit) 정책을 사용했을 때 free list의 순서가 속도가 제일 빠른 것은 <code class="docutils literal notranslate"><span class="pre">SIZESORT-</span></code>이다. 적합한 블록중 가장 첫번째를 찾는다. 따라서 항상 가장 큰 값을 가진 블록이 첫번 째에 있는 순서이기 때문에 빠르고 다음으로는 <code class="docutils literal notranslate"><span class="pre">ADDSORT</span></code>가 빠르며, 가장 느린 순서는 <code class="docutils literal notranslate"><span class="pre">SIZESORT+</span></code>가 가장 느리다.</p></li>
+</ul>
+</li>
+<li><p>프리 리스트의 병합(Coalescing)은 매우 중요할 수 있습니다. 무작위 할당 수를 늘려보세요(예: -n 1000). 시간이 지남에 따라 큰 할당 요청에는 어떤 일이 일어나나요? 병합 없이(즉, -C 플래그 없이) 그리고 병합과 함께 실행해 보세요. 결과에 어떤 차이가 있나요? 각 경우에 시간에 따른 프리 리스트의 크기는 어떻게 되나요? 이 경우 리스트의 순서가 중요한가요?</p>
+<ul class="simple">
+<li><p>Answer : 병합을 하지 않으면 free list에 블록이 여러개로 늘어나며 값은 고정되어 있고 크기는 1,2 등의 작은 크기로 이뤄져있다. 이로 인해 공간에 대한 손해로 이어진다. 큰 값이 들어오면 많은 리스트를 봐야하기 때문에 속도 또한 늦어진다. 하지만 병합을 진행하면 free list 블록들이 병합을 하며 하나의 요소를 만들어 속도와 효율성이 증가한다.</p></li>
+</ul>
+</li>
+<li><p>할당된 블록의 비율을 나타내는 <code class="docutils literal notranslate"><span class="pre">-P</span></code>를 50 이상으로 변경하면 어떻게 되나요? 이 비율이 100에 가까워지면 할당은 어떻게 되나요? 0에 가까워지면요?</p>
+<ul class="simple">
+<li><p>Answer : <code class="docutils literal notranslate"><span class="pre">-P</span></code>가 높으면 그만큼 할당된 블록이 많아지며 메모리 주소 공간에 대한 여유가 사라진다. 이로 인해 할당을 받지 못하는 경우도 생긴다. 반대로 <code class="docutils literal notranslate"><span class="pre">-P</span></code>가 낮으면 할당된 블록의 비율이 낮아져 주소공간의 대한 여유가 많이 생긴다.</p></li>
+</ul>
+</li>
+<li><p>고도로 단편화된 프리 공간을 생성하려면 어떤 종류의 특정 요청을 만들 수 있나요? -A 플래그를 사용하여 단편화된 프리 리스트를 생성하고, 다양한 정책과 옵션이 프리 리스트의 구성을 어떻게 변경하는지 확인하세요.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BEST</span></code> : 먼저 할당될 블록의 크기와 같거나 큰 블록을 찾는다. 그 후, 후보자 그룹에서 가장 장은 크기에 블록에 할당하기 때문에 효율성이 좋다. 하지만 free list 요소를 전부 확인해야하지 때문에 속도는 오래 걸린다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WORST</span></code> : 최악 적합은 최적 적합의 반대 방식이다. 가장 큰 빈 블록윽 찾아 요청된 크기 만큼만 반환하고 남는 부분은 빈 공간 리스트에 계속 유지한다. 최악 적합의 목적은 최적 적합방식에서 발생될 수 있는 작은 청크들을 방지하는 것이다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code> : 최선 적합은 속도가 빠르다는 것이 장점이다. 원하는 블록을 찾기 위해 모든 블록을 볼 필요가 없다. 따라서 free list 순서를 <code class="docutils literal notranslate"><span class="pre">SIZESORT-</span></code>로 진행하면 속도가 빠르다.</p></li>
+</ol>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-C</span></code> : 병합은 free list에 블록 개수를 줄여주며 주소 공간의 효율성을 증가시킨다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-A</span></code> : OPSLIST는 사용자가 직접 할당과 해제를 통해 유연성과 테스트의 용이성이 생긴다. 따라서 단편화가를 통해 일관성 또한 생긴다. 하지만 오류의 가능성이 존재한다.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./projects/202121010"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Key-Value store project by ypilseong</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../202221014/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">프로젝트: Key-Value Store 구현</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-1">week 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-2">week 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-4">week 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-6">week 6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#week-7">week 7</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

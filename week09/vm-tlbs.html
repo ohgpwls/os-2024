@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>페이징: 더 빠른 변환 (TLB) &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'week09/vm-tlbs';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="물리 메모리 크기의 극복: 메커니즘" href="vm-swap.html" />
+    <link rel="prev" title="페이징: 개요" href="vm-paging.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week02/index.html">Week 2 - 가상화의 세계</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week02/dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-mechanisms.html">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week03/index.html">Week 3 - 스케줄링 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week03/cpu-scheduling.html">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Week 9 - 메모리 가상화 4</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week14/index.html">Week 14 - 영속성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week14/data-integrity.html">데이터 무결성과 보호</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/fs-implementation.html">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/index.html">OS 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121010/index.html">Key-Value store project by ypilseong</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121010/homework.html">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/week09/vm-tlbs.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fweek09/vm-tlbs.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/week09/vm-tlbs.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>페이징: 더 빠른 변환 (TLB)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">TLB의 기본 알고리즘</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">예제: 배열 접근</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">TLB 미스는 누가 처리할까</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">TLB의 구성: 무엇이 있나?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">TLB의 문제: 문맥 교환</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">이슈: 교체 정책</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">요약</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tlb">
+<h1>페이징: 더 빠른 변환 (TLB)<a class="headerlink" href="#tlb" title="Link to this heading">#</a></h1>
+<p>페이징은 가상 메모리 관리 기법 중 하나로, 프로세스의 주소 공간을 일정한 크기의 페이지 단위로 나누어 관리합니다. 이 기법은 메모리 활용도를 높이고 프로세스 간 메모리 보호를 제공하는 등 많은 장점이 있지만, 성능 저하를 야기할 수 있는 단점도 있습니다.</p>
+<p>페이징에서는 각 페이지의 실제 메모리 상의 위치를 나타내는 매핑 정보를 페이지 테이블이라는 자료구조에 저장합니다. 이 페이지 테이블은 메모리에 상주하므로, 프로세스가 가상 주소를 사용하여 메모리에 접근할 때마다 페이지 테이블을 참조하여 실제 물리 주소를 얻어야 합니다. 이를 주소 변환(Address Translation)이라고 합니다.</p>
+<p>문제는 이 주소 변환 과정에서 추가적인 메모리 접근이 발생한다는 점입니다. 프로세스가 메모리에 접근할 때마다 페이지 테이블을 읽어야 하므로, 매 메모리 접근마다 두 번의 메모리 연산(페이지 테이블 읽기 + 실제 데이터 읽기/쓰기)이 필요하게 됩니다. 이는 심각한 성능 저하를 초래할 수 있습니다.</p>
+<p>이 문제를 해결하기 위해 우리는 다음과 같은 질문을 해볼 수 있습니다:</p>
+<p><strong>핵심 질문:</strong></p>
+<ol class="arabic simple">
+<li><p>주소 변환 속도를 어떻게 향상시킬 수 있을까?</p></li>
+<li><p>페이징에서 발생하는 추가 메모리 참조를 어떻게 피할 수 있을까?</p></li>
+<li><p>이를 위해 어떤 하드웨어 지원이 필요할까?</p></li>
+<li><p>운영체제는 어떤 식으로 관여해야 할까?</p></li>
+</ol>
+<p>이 문제를 해결하기 위해, 우리는 하드웨어의 도움을 받을 수 있습니다. 바로 <strong>Translation Lookaside Buffer (TLB)</strong> 라는 특별한 하드웨어 캐시를 사용하는 것입니다.</p>
+<p>TLB는 CPU의 Memory Management Unit (MMU) 내에 위치한 작고 빠른 하드웨어 캐시입니다. TLB의 목적은 최근에 사용된 가상 주소와 물리 주소 간의 매핑 정보를 저장하여, 주소 변환 속도를 향상시키는 것입니다.</p>
+<p>프로세스가 가상 주소를 사용하여 메모리에 접근하면, 하드웨어는 먼저 TLB에서 해당 가상 주소의 변환 정보를 찾아봅니다. 만약 TLB에 정보가 있다면 (TLB Hit), 곧바로 물리 주소를 얻어 메모리에 접근할 수 있습니다. 이 경우, 페이지 테이블을 읽는 추가 작업 없이 주소 변환을 완료할 수 있으므로 매우 빠릅니다.</p>
+<p>반면에, 원하는 정보가 TLB에 없는 경우 (TLB Miss)에는 기존대로 페이지 테이블을 참조하여 주소 변환을 진행해야 합니다. 이 과정에서 얻은 변환 정보는 향후 재사용을 위해 TLB에 저장됩니다.</p>
+<p>적절한 크기의 TLB를 사용하면, 대부분의 메모리 접근이 TLB Hit로 처리되므로 전체적인 주소 변환 속도가 크게 향상됩니다. 이렇게 TLB를 사용함으로써 페이징의 성능 문제를 완화하고, 가상 메모리를 실질적으로 사용 가능하게 만들 수 있습니다.</p>
+<p><strong>주요 용어 정리</strong></p>
+<ul class="simple">
+<li><p><strong>페이징 (Paging)</strong>: 가상 메모리를 일정한 크기의 페이지 단위로 나누어 관리하는 기법.</p></li>
+<li><p><strong>페이지 (Page)</strong>: 가상 메모리를 일정한 크기로 나눈 블록. 주소 변환의 기본 단위가 됨.</p></li>
+<li><p><strong>페이지 테이블 (Page Table)</strong>: 각 페이지의 가상 주소와 실제 물리 주소 간의 매핑 정보를 저장하는 자료구조.</p></li>
+<li><p><strong>주소 변환 (Address Translation)</strong>: 가상 주소를 물리 주소로 변환하는 과정.</p></li>
+<li><p><strong>Translation Lookaside Buffer (TLB)</strong>: 주소 변환을 가속하기 위한 하드웨어 캐시. 최근 사용된 가상-물리 주소 매핑 정보를 저장함.</p></li>
+<li><p><strong>TLB Hit</strong>: 원하는 주소 변환 정보가 TLB에 존재하는 경우.</p></li>
+<li><p><strong>TLB Miss</strong>: 원하는 주소 변환 정보가 TLB에 없는 경우. 페이지 테이블을 참조하여 변환을 진행해야 함.</p></li>
+</ul>
+<p>운영체제와 하드웨어의 긴밀한 협력을 통해, 우리는 페이징의 단점을 극복하고 가상 메모리의 장점을 충분히 활용할 수 있습니다. TLB와 같은 하드웨어 지원은 운영체제의 성능을 향상시키는 데 핵심적인 역할을 합니다.</p>
+<section id="id1">
+<h2>TLB의 기본 알고리즘<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>TLB 검색 과정
+가상 주소가 제공되면, 해당 주소의 가상 페이지 번호(VPN)를 추출하고, TLB에서 이 VPN에 해당하는 엔트리를 병렬적으로 검색한다. 일치하는 엔트리가 있는 경우, 그 엔트리에 포함된 물리 페이지 번호(PPN)로 물리 주소를 계산한다.</p></li>
+<li><p>TLB 히트
+유효한 엔트리가 존재하면, 즉시 물리 주소를 생성하고 메모리에 액세스한다. 이 과정을 TLB 히트라고 한다.</p></li>
+<li><p>TLB 미스
+일치하는 엔트리가 없을 경우, TLB 미스가 발생하며, 페이지 테이블을 참조하여 가상 주소를 물리 주소로 변환한다. 변환된 주소는 TLB에 추가되어 다음 접근 시 빠르게 찾을 수 있도록 한다.</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>예제: 배열 접근<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="w">    </span><span class="n">array</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// 배열의 특정 위치에 데이터 쓰기</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>이 코드에서 array[50]에 값을 할당하려면 다음과 같은 과정이 필요합니다.</p>
+<ol class="arabic simple">
+<li><p>가상 주소 0x1400 (50 * 4) 생성</p></li>
+<li><p>TLB 검색: 0x1400에 대한 엔트리가 존재하는지 확인</p>
+<ul class="simple">
+<li><p>TLB 히트: 엔트리가 존재하면 엔트리에 포함된 물리 페이지 번호를 사용하여 물리 주소를 생성하고 메모리에 액세스</p></li>
+<li><p>TLB 미스: 엔트리가 존재하지 않으면 페이지 테이블 워크를 통해 변환 정보를 검색</p></li>
+</ul>
+</li>
+<li><p>페이지 테이블 워크: 페이지 테이블에서 가상 페이지 번호 0x3C에 대한 엔트리를 찾아 물리 페이지 번호를 얻음</p></li>
+<li><p>TLB에 엔트리 추가: 0x1400 (VPN)과 0x0A00 (PPN)으로 구성된 엔트리를 TLB에 추가</p></li>
+<li><p>물리 주소 생성: 물리 페이지 번호 0x0A00과 오프셋 0x00을 사용하여 물리 주소 0xA000 생성</p></li>
+<li><p>메모리 액세스: 0xA000 주소에 값 10 저장</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>TLB 미스는 누가 처리할까<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>TLB 미스는 Translation Lookaside Buffer(번역 조회 버퍼)에서 원하는 주소 변환 정보를 찾지 못할 때 발생하는 상황입니다. TLB 미스를 처리하는 방법은 두 가지가 있습니다: 하드웨어 관리와 소프트웨어(운영 체제) 관리입니다.</p>
+<p>하드웨어 관리 방식은 주로 복잡한 명령어 집합인 CISC(complex instruction set computers) 구조에서 사용됩니다. 하드웨어가 TLB 미스를 처리하려면 페이지 테이블에 대한 정보를 갖고 있어야 합니다. TLB 미스가 발생하면 하드웨어가 페이지 테이블에서 필요한 정보를 추출하고 TLB를 갱신한 후 명령어를 재실행합니다.</p>
+<p>반면에 소프트웨어 관리 방식은 최근에 등장한 RISC(reduced instruction set computing) 구조에서 주로 사용됩니다. TLB 미스가 발생하면 하드웨어가 예외 시그널을 발생시키고, 이를 받은 운영 체제가 커널 모드로 전환하여 트랩 핸들러를 실행합니다. 트랩 핸들러는 페이지 테이블을 검색하여 변환 정보를 찾고 TLB를 갱신한 후에 명령어를 재실행합니다.</p>
+<p>이 두 가지 방법의 중요한 차이점은 하드웨어 관리 방식은 하드웨어가 직접 TLB 미스를 처리하는 데 반해, 소프트웨어 관리 방식은 운영 체제의 코드가 TLB 미스를 처리한다는 것입니다. 소프트웨어 관리 방식은 유연성이 높고 하드웨어 변경에 영향을 받지 않지만, 성능 측면에서는 하드웨어 관리 방식에 비해 부가적인 오버헤드가 있을 수 있습니다.</p>
+<p>TLB 미스가 발생하면 운영 체제의 페이지 폴트 핸들러가 실행되어 페이지 테이블을 참조하여 필요한 가상-물리 주소 변환 정보를 찾는다. 이 정보는 TLB에 로드되고, 이후 메모리 액세스는 TLB 히트로 처리된다.</p>
+</section>
+<section id="id4">
+<h2>TLB의 구성: 무엇이 있나?<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>TLB는 일반적으로 다음과 같은 항목으로 구성됩니다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>가상 페이지 번호(VPN)</p></td>
+<td><p>가상 주소에서 추출된 페이지 번호입니다.</p></td>
+</tr>
+<tr class="row-odd"><td><p>물리 페이지 프레임 번호(PPFN)</p></td>
+<td><p>물리 메모리에서 해당 페이지를 저장하는 프레임 번호입니다.</p></td>
+</tr>
+<tr class="row-even"><td><p>액세스 권한</p></td>
+<td><p>해당 페이지에 대한 액세스 권한(읽기, 쓰기, 실행)을 나타냅니다.</p></td>
+</tr>
+<tr class="row-odd"><td><p>유효 비트</p></td>
+<td><p>해당 엔트리가 유효한지 여부를 나타냅니다.</p></td>
+</tr>
+<tr class="row-even"><td><p>ASID (Address Space Identifier)</p></td>
+<td><p>프로세스 간 TLB 엔트리 충돌을 방지합니다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h2>TLB의 문제: 문맥 교환<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>다른 프로세스는 다른 가상 주소 공간을 사용하기 때문에 문맥 교환이 발생하면 현재 프로세스의 TLB 엔트리가 유효하지 않게 될 수 있습니다.</p>
+<p>이 문제를 해결하기 위해 다음과 같은 방법을 사용할 수 있습니다.</p>
+<ul class="simple">
+<li><p>TLB를 비우기: 문맥 교환이 발생할 때마다 TLB를 비웁니다.</p></li>
+<li><p>ASID(Address Space Identifier) 사용: TLB 엔트리에 ASID를 추가하여 프로세스별 TLB 엔트리를 구분합니다.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>이슈: 교체 정책<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>TLB Miss가 발생하면 TLB에 새 엔트리를 추가해야 합니다. 하지만 TLB는 제한된 크기의 캐시이기 때문에 어떤 엔트리를 교체해야 할지 결정하는 정책이 필요합니다.<br />
+TLB의 교체 정책은 제한된 공간과 성능 요구 사항을 충족하기 위해 매우 중요합니다. 각 정책은 특정 시나리오에서의 성능 최적화를 목표로 합니다.</p>
+<p>일반적인 교체 정책으로는 다음과 같은 것들이 있습니다.</p>
+<ul class="simple">
+<li><p>LRU (Least Recently Used): 최근에 사용되지 않은 항목을 먼저 교체합니다.</p></li>
+<li><p>FIFO (First In, First Out): 먼저 추가된 항목을 먼저 교체합니다.</p></li>
+<li><p>Random Replacement: 무작위 선택을 통한 교체</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>요약<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>TLB(Translation Lookaside Buffer)은 가상 주소를 물리 주소로 변환하는 과정에서 사용되는 고속 캐시 메모리입니다.
+TLB의 주요 목적은 최근에 사용된 가상-물리 주소 변환 정보를 저장하여 변환 속도를 높이는 것입니다.</p>
+<p>TLB 미스가 발생했을 때, 즉 TLB에 필요한 변환 정보가 캐시되어 있지 않을 때, 페이지 테이블 워크 과정을 통해 해당 정보를 찾습니다.
+이 과정에서 CPU는 메모리에 있는 페이지 테이블을 참조하여 가상 주소를 물리 주소로 변환합니다.</p>
+<p>TLB의 구성 요소는 다음과 같습니다.</p>
+<p>가상 페이지 번호(VPN): 가상 주소에서 추출된 페이지 번호로, TLB에서 검색에 사용됩니다.
+물리 페이지 프레임 번호(PPFN): 해당 가상 페이지 번호에 대응하는 물리 메모리의 페이지 프레임 번호입니다.
+액세스 권한: 해당 페이지에 대한 액세스 권한(읽기, 쓰기, 실행)을 나타냅니다.
+유효 비트: TLB 엔트리의 유효성을 나타내며, 해당 엔트리가 유효한지 여부를 판단합니다.
+ASID (Address Space Identifier): 프로세스 간 TLB 엔트리 충돌을 방지하기 위한 고유 식별자입니다.
+문맥 교환 시에는 현재 프로세스의 TLB 엔트리가 유효하지 않게 될 수 있으므로, 이를 해결하기 위해 TLB를 비우거나 ASID를 사용하는 방법이 있습니다.</p>
+<p>TLB의 교체 정책은 TLB 미스가 발생했을 때 어떤 엔트리를 교체할지 결정하는 방법을 정의합니다.
+일반적으로 사용되는 교체 정책으로는 LRU(Least Recently Used), FIFO(First In, First Out), Random Replacement 등이 있습니다.
+이 정책은 제한된 TLB 공간을 최대한 효율적으로 활용하고 성능을 최적화하기 위해 사용됩니다.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./week09"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="vm-paging.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">페이징: 개요</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="vm-swap.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">물리 메모리 크기의 극복: 메커니즘</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">TLB의 기본 알고리즘</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">예제: 배열 접근</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">TLB 미스는 누가 처리할까</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">TLB의 구성: 무엇이 있나?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">TLB의 문제: 문맥 교환</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">이슈: 교체 정책</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">요약</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,873 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>제한적 직접 실행 원리 &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'week02/cpu-mechanisms';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="리눅스 셸 (Linux Shells)" href="shells.html" />
+    <link rel="prev" title="프로세스 API" href="cpu-api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Week 2 - 가상화의 세계</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week03/index.html">Week 3 - 스케줄링 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week03/cpu-scheduling.html">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week09/index.html">Week 9 - 메모리 가상화 4</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-tlbs.html">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week14/index.html">Week 14 - 영속성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week14/data-integrity.html">데이터 무결성과 보호</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/fs-implementation.html">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/index.html">OS 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121010/index.html">Key-Value store project by ypilseong</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121010/homework.html">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/week02/cpu-mechanisms.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fweek02/cpu-mechanisms.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/week02/cpu-mechanisms.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>제한적 직접 실행 원리</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">기본 원리 : 제한적 직접 실행</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">문제점 1: 제한된 연산</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">핵심 질문: 프로세스가 제한된 연산을 수행하는 방법은 무엇인가?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">시스템 콜이 일반 함수 호출과 비슷해 보이는 이유</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">문제점 2: 프로세스 간 전환</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">협조적 스케줄링: 운영체제가 시스템 콜을 기다리는 방식</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu">비협조적 스케줄링: 운영체제가 강제로 CPU 제어권을 획득하는 방식</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">문맥 저장과 복원</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">병행성이 걱정</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">인터럽트 처리 중 인터럽트 발생의 문제</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">정리</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>제한적 직접 실행 원리<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>운영체제는 CPU 가상화를 위해 제한적 직접 실행이라는 기법을 사용합니다. 이 기법의 기본 아이디어는 프로그램을 CPU에서 직접 실행시키되, 운영체제가 CPU 제어권을 잃지 않도록 프로세스의 행동에 제한을 두는 것입니다.</p>
+<section id="id2">
+<h2>기본 원리 : 제한적 직접 실행<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>프로그램을 실행할 때 운영체제는 다음과 같은 절차를 따릅니다:</p>
+<ol class="arabic simple">
+<li><p>프로세스를 위한 메모리를 할당하고 프로그램을 메모리에 적재합니다.</p></li>
+<li><p>CPU를 사용자 모드로 전환하고 프로그램의 main() 함수로 이동합니다.</p></li>
+<li><p>프로그램이 실행되면서 시스템 콜이 호출되면 커널 모드로 전환되고 운영체제가 해당 요청을 처리합니다.</p></li>
+<li><p>요청 처리가 완료되면 다시 사용자 모드로 돌아가 프로그램 실행을 계속합니다.</p></li>
+</ol>
+<p>이런 직접 실행 방식은 CPU 가상화를 구현하는 데 있어 몇 가지 문제를 야기합니다.</p>
+<p>첫째, 프로그램을 그대로 실행시킨다면 운영체제가 원하지 않는 동작을 프로그램이 수행하지 않는다는 것을 어떻게 보장할 수 있을까요? 프로그램에 아무런 제한을 두지 않는다면, 운영체제의 통제를 벗어나는 일이 발생할 수 있습니다.</p>
+<p>둘째, 프로세스를 실행할 때 운영체제가 CPU 사용을 적절히 분배하려면 프로그램 실행을 중단하고 다른 프로세스로 전환할 수 있어야 합니다. 이를 시분할(time sharing)이라고 하는데, 직접 실행 방식으로는 이를 구현하기 어렵습니다.</p>
+<p>여기서 시분할(time sharing)이란 여러 프로세스가 CPU를 돌아가며 사용하도록 하여, 마치 동시에 실행되는 것처럼 보이게 하는 기술을 말합니다. 이는 CPU 가상화를 위해 필수적인 개념입니다.</p>
+<p>이 문제들에 대한 해답을 찾아가는 과정에서 우리는 CPU 가상화에 필요한 사항들을 더 잘 이해하게 될 것입니다. 그리고 “제한적 직접 실행”이라는 이름에 담긴 의미, 즉 프로그램 실행에 일정한 제한을 가하는 것의 중요성도 깨닫게 될 것입니다.</p>
+<p>만약 프로그램 실행을 제한하지 않는다면 운영체제는 아무것도 통제할 수 없게 되고, 그저 단순한 라이브러리에 지나지 않게 됩니다. 이는 운영체제가 제 역할을 하기 위해서는 매우 바람직하지 않은 상황이 될 것입니다.</p>
+</section>
+<section id="id3">
+<h2>문제점 1: 제한된 연산<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>그러나 프로세스가 모든 연산을 수행하도록 허용하면 시스템의 안정성과 보안에 문제가 생길 수 있습니다. 따라서 사용자 모드에서 실행되는 코드는 특정 연산에 제한을 받습니다. 제한된 연산을 수행하려면 시스템 콜을 통해 운영체제에 요청해야 합니다.</p>
+<section id="id4">
+<h3>핵심 질문: 프로세스가 제한된 연산을 수행하는 방법은 무엇인가?<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>프로세스는 파일 입출력과 같은 제한된 연산을 수행해야 할 때가 있습니다. 그러나 프로세스는 시스템의 모든 자원에 직접 접근할 권한이 없기 때문에 이러한 연산을 직접 수행할 수 없습니다. 그렇다면 운영체제와 하드웨어는 어떤 방식으로 프로세스가 제한된 연산을 수행할 수 있도록 도와줄까요?</p>
+<p>팁: 하드웨어의 도움으로 보호된 제어 양도</p>
+<p>하드웨어는 두 가지 실행 모드를 제공하여 운영체제를 지원합니다:</p>
+<ol class="arabic simple">
+<li><p>사용자 모드(user mode): 응용 프로그램이 실행되는 모드로, 하드웨어 자원에 대한 접근이 제한됩니다.</p></li>
+<li><p>커널 모드(kernel mode): 운영체제가 실행되는 모드로, 모든 하드웨어 자원에 접근할 수 있는 권한을 가집니다.</p></li>
+</ol>
+<p>프로세스가 제한된 연산을 수행하려면 사용자 모드에서 커널 모드로 전환되어야 합니다. 이를 위해 하드웨어는 다음과 같은 특수 명령어를 제공합니다:</p>
+<ul class="simple">
+<li><p>trap: 사용자 모드에서 커널 모드로 전환하는 명령어</p></li>
+<li><p>return-from-trap: 커널 모드에서 사용자 모드로 돌아가는 명령어</p></li>
+</ul>
+<p>또한 운영체제는 트랩이 발생했을 때 실행할 코드의 주소를 담고 있는 트랩 테이블(trap table)을 하드웨어에 알려주어야 합니다.</p>
+<p>이러한 하드웨어의 지원을 바탕으로, 프로세스는 제한된 연산이 필요할 때 시스템 콜을 호출하여 trap을 발생시키고, 운영체제는 요청받은 연산을 대신 수행한 뒤 return-from-trap을 통해 다시 프로세스에게 제어를 넘겨줍니다.</p>
+</section>
+<section id="id5">
+<h3>시스템 콜이 일반 함수 호출과 비슷해 보이는 이유<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>open()이나 read()같은 시스템 콜을 호출하는 코드를 보면, C언어의 일반적인 함수 호출 코드와 매우 유사합니다. 그렇다면 시스템 콜과 함수 호출이 동일한 형태라면, 운영체제는 어떻게 이 둘을 구분하여 시스템 콜에 맞는 동작을 수행할 수 있을까요?</p>
+<p>답은 간단합니다. 시스템 콜도 사실 함수 호출이지만, 그 안에는 trap이라는 특수 명령어가 숨어있기 때문입니다. 좀 더 자세히 설명하면 다음과 같습니다.</p>
+<p>예를 들어 open() 시스템 콜을 호출하는 코드를 생각해 봅시다. 이 코드가 실행되면 사실 C 라이브러리 내부의 open() 함수가 호출됩니다. 이 라이브러리 함수는 운영체제 커널과 미리 약속된 규칙에 따라, open()에 전달된 인자들과 시스템 콜 번호를 정해진 위치(스택이나 특정 레지스터)에 저장합니다. 그리고 나서 trap 명령어를 실행하여 운영체제로 제어를 넘깁니다.</p>
+<p>운영체제는 trap 핸들러를 실행하여 요청받은 시스템 콜을 처리하고, 그 결과를 다시 약속된 위치에 저장합니다. 이제 trap 명령어에 의해 실행이 중단되었던 라이브러리 함수로 다시 제어가 돌아오면, 라이브러리 함수는 이 결과값을 받아 시스템 콜을 호출한 원래 프로그램에 반환합니다.</p>
+<p>여기서 주목할 점은, 시스템 콜을 호출하는 라이브러리 함수의 코드는 대부분 어셈블리어로 작성되어 있다는 것입니다. 이는 함수의 인자와 반환값을 처리하고 trap을 실행하는 과정이 하드웨어마다 조금씩 다르기 때문에, 이 부분은 어셈블리어로 구현되어야 합니다.</p>
+<p>다행히 프로그램 개발자가 직접 어셈블리 코드를 작성할 필요는 없습니다. 시스템 콜을 C 함수처럼 호출하기만 하면, 나머지는 라이브러리가 알아서 처리해 주기 때문이죠.</p>
+</section>
+</section>
+<section id="id6">
+<h2>문제점 2: 프로세스 간 전환<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>운영체제는 여러 프로세스를 번갈아 가며 실행해야 하므로, CPU 제어권을 다시 얻어 문맥 교환을 수행할 수 있어야 합니다. 이를 위해 하드웨어 타이머를 사용하여 주기적으로 인터럽트를 발생시킵니다. 타이머 인터럽트가 발생하면 운영체제는 CPU 제어권을 되찾아 현재 프로세스의 상태를 저장하고 다음에 실행할 프로세스의 정보를 복원하여 실행을 계속합니다.</p>
+<section id="id7">
+<h3>협조적 스케줄링: 운영체제가 시스템 콜을 기다리는 방식<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>초기의 몇몇 운영체제들은 협조적(cooperative) 스케줄링 방식을 사용했습니다. 대표적인 예로는 초기 버전의 매킨토시 운영체제나 제록스 알토 시스템이 있죠. 이 방식에서 운영체제는 프로세스들이 공정하게 CPU를 양보할 것이라고 가정합니다. 만약 어떤 프로세스가 너무 오랫동안 CPU를 독점할 것 같으면, 그 프로세스는 정기적으로 CPU 사용권을 운영체제에게 넘겨줘서 다른 프로세스들이 실행될 수 있게 해야 합니다.</p>
+<p>그럼 이런 질문을 할 수 있겠네요. “이 이상적인 상황에서 프로세스는 어떻게 자발적으로 CPU를 양보하나요?” 대부분의 프로세스는 파일 입출력, 네트워크 통신, 새 프로세스 생성 등의 작업을 위해 시스템 콜을 자주 호출하게 됩니다. 프로세스가 시스템 콜을 호출하면 자연스럽게 CPU 제어권이 운영체제로 넘어가게 되죠. 심지어 어떤 운영체제들은 ‘yield’라는 시스템 콜을 제공하기도 하는데, 이 호출은 특별히 할 일이 없어도 자발적으로 CPU를 양보하는 역할을 합니다.</p>
+<p>팁: 오작동하는 프로그램을 어떻게 처리할까요?</p>
+<p>하지만 운영체제는 가끔 규칙을 어기는 프로세스들을 처리해야 할 때도 있습니다. 프로그래밍 오류나 악의적인 의도로 인해, 어떤 프로세스들은 허용되지 않은 동작을 시도할 수도 있거든요. 현대 운영체제는 이런 비정상적인 프로세스를 그냥 강제 종료시킵니다. 야구로 치면 “One strike, you’re out!” 같은 거죠. 좀 가혹해 보일 수도 있지만, 불법 메모리 접근이나 잘못된 명령어 실행 같은 상황에서 운영체제가 할 수 있는 일이 그리 많지는 않습니다.</p>
+<p>만약 프로세스가 잘못된 행동을 하면 대개 트랩(trap)이 발생하고 CPU 제어권이 운영체제에게 넘어갑니다. 예를 들어 0으로 나누기를 시도한다거나 접근 권한이 없는 메모리 영역에 접근하려 하면 트랩이 발생하는 식이죠. 트랩이 발생하면 운영체제는 문제를 일으킨 프로세스를 강제 종료시킬 수 있습니다.</p>
+<p>그러니까 협조적 스케줄링 방식에서는 운영체제가 시스템 콜이나 트랩(불법 연산)이 발생하기를 기다렸다가 CPU를 다시 획득하는 방식입니다. 하지만 이런 수동적인 방법에는 문제가 있습니다. 만약 어떤 프로세스가 악의적으로든, 실수로든 무한 루프에 빠져서 전혀 시스템 콜을 호출하지 않는다면 어떻게 될까요? 이런 상황에서 운영체제는 속수무책으로 당할 수밖에 없겠죠.</p>
+</section>
+<section id="cpu">
+<h3>비협조적 스케줄링: 운영체제가 강제로 CPU 제어권을 획득하는 방식<a class="headerlink" href="#cpu" title="Link to this heading">#</a></h3>
+<p>이제, 프로세스들이 자발적으로 CPU를 양보하지 않고 계속 실행을 독점하려 할 때는 어떻게 해야 할까요? 안타깝게도 하드웨어의 추가적인 지원 없이는 운영체제가 할 수 있는 일이 거의 없습니다. 사실 협조적 스케줄링에서 프로세스가 무한 루프에 빠졌을 때 운영체제가 할 수 있는 유일한 방법은 컴퓨터를 재부팅하는 것뿐이었죠. 이는 오랫동안 모든 컴퓨터 문제를 해결하는 만능키 같은 역할을 해왔습니다. 하지만 CPU 제어권을 되찾기 위해 매번 재부팅을 한다는 건 그리 현명한 방법은 아닙니다.</p>
+<p>핵심 질문: 비협조적인 프로세스로부터 어떻게 CPU를 되찾을 수 있을까?</p>
+<p>운영체제가 비협조적인 프로세스로부터 CPU 제어권을 빼앗아 오기 위해서는 어떤 방법이 필요할까요? 우리는 악의적인 프로세스가 마음대로 시스템을 장악하는 것을 막아야만 합니다.</p>
+<p>이 문제에 대한 해결책은 수십 년 전 초기 컴퓨터 시스템을 설계했던 엔지니어들에 의해 고안되었습니다. 그 해결책은 바로 ‘타이머 인터럽트(timer interrupt)’를 이용하는 것입니다. 타이머 장치를 프로그래밍하여 일정 시간(보통 몇 밀리초)마다 인터럽트를 발생시키도록 하는 거죠. 타이머 인터럽트가 발생하면, 현재 실행 중이던 프로세스는 즉시 중단되고 미리 정해진 인터럽트 핸들러(interrupt handler)로 제어가 넘어갑니다. 이 핸들러는 운영체제의 코드입니다. 따라서 이 시점에서 운영체제는 CPU를 다시 장악하게 되고, 원하는 작업(현재 프로세스를 중단하고 다른 프로세스로 전환하는 등)을 수행할 수 있게 되는 것입니다.</p>
+<p>팁: 타이머 인터럽트로 CPU를 다시 장악하기</p>
+<p>타이머 인터럽트 기능은 프로세스가 비협조적일 때도 운영체제가 주기적으로 CPU를 되찾을 수 있게 해주는 핵심 메커니즘입니다. 이를 통해 운영체제는 시스템에 대한 제어권을 유지할 수 있습니다.</p>
+<p>물론 운영체제는 타이머 인터럽트가 발생했을 때 어떤 코드를 실행해야 하는지 하드웨어에 알려주어야 합니다. 이 작업은 시스템이 부팅되는 동안 이루어집니다. 부팅 과정에서 운영체제는 타이머를 시작시키고, 타이머 인터럽트가 발생하면 자신에게 제어가 넘어올 것이라는 사실을 알기에 안심하고 사용자 프로그램을 실행할 수 있게 되는 것이죠. 물론 운영체제는 필요할 때 타이머를 멈출 수도 있습니다. 이에 대한 자세한 내용은 병행성을 다룰 때 더 살펴보겠습니다.</p>
+<p>타이머 인터럽트가 발생했을 때 하드웨어도 해야 할 일이 있습니다. 현재 실행 중이던 프로그램의 상태(레지스터 값들)를 저장해서, 추후 인터럽트 처리가 끝나고 해당 프로그램으로 복귀할 때 그대로 실행을 재개할 수 있도록 해야 하는 것이죠. 이 과정은 시스템 콜이 호출되었을 때 일어나는 일과 매우 유사합니다. 다양한 레지스터 값들이 커널 스택에 저장되었다가, ‘return-from-trap’ 명령어에 의해 복원됩니다.</p>
+</section>
+<section id="id8">
+<h3>문맥 저장과 복원<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>운영체제가 시스템 콜이나 타이머 인터럽트를 통해 CPU 제어권을 되찾았다면, 그 다음에는 중요한 결정을 내려야 합니다. 바로 “현재 실행 중이던 프로세스를 계속 실행할 것인가, 아니면 다른 프로세스로 전환할 것인가”를 결정해야 하는 것이죠. 이 결정은 운영체제 내의 스케줄러(scheduler)라는 모듈이 담당합니다. 스케줄러가 어떤 정책에 따라 이 결정을 내리는지에 대해서는 이후 장에서 더 자세히 살펴보겠습니다.</p>
+<p>만약 스케줄러가 다른 프로세스로 전환하기로 결정했다면, 운영체제는 ‘문맥 교환(context switch)’이라 불리는 작업을 수행합니다. 문맥 교환의 기본 개념은 간단합니다. 현재 실행 중인 프로세스의 레지스터 값들을 모두 저장하고(주로 커널 스택에), 다음에 실행할 프로세스의 레지스터 값들을 복원하는 것입니다. 이렇게 하면 ‘return-from-trap’ 명령어가 실행될 때, 원래 실행 중이던 프로세스로 돌아가는 것이 아니라 새로운 프로세스로 가서 실행을 시작하게 되는 것이죠.</p>
+<p>문맥 교환을 위해 운영체제는 저수준 어셈블리어를 사용합니다. 현재 프로세스의 범용 레지스터, 프로그램 카운터(PC), 커널 스택 포인터 등을 모두 저장하고, 다음 프로세스의 값들을 복원합니다. 이렇게 하면 인터럽트가 발생했을 때의 프로세스에서 문맥 교환 코드를 호출하고, 새 프로세스의 문맥으로 복귀하게 되는 것입니다. ‘return-from-trap’이 실행되면, 새 프로세스가 실행 중인 프로세스가 되고, 문맥 교환이 완료됩니다.</p>
+<p>문맥 교환 과정에서는 레지스터 값의 저장과 복원이 두 번 일어난다는 점에 주목해야 합니다.</p>
+<ol class="arabic simple">
+<li><p>첫 번째는 타이머 인터럽트 등에 의해 인터럽트가 발생했을 때입니다. 이때는 하드웨어가 자동으로 현재 프로세스의 사용자 레지스터를 커널 스택에 저장합니다.</p></li>
+<li><p>두 번째는 운영체제가 프로세스 전환을 결정했을 때입니다. 이때는 운영체제 커널이 현재 프로세스의 나머지 레지스터(커널 레지스터)를 프로세스의 PCB(Process Control Block)에 저장합니다.</p></li>
+</ol>
+<p>이렇게 하면 마치 원래 실행 중이던 프로세스 A가 아니라, 새 프로세스 B에서 인터럽트가 발생한 것처럼 보이게 됩니다.</p>
+</section>
+</section>
+<section id="id9">
+<h2>병행성이 걱정<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>다만 인터럽트나 시스템 콜 처리 도중에 다른 인터럽트가 발생하면 까다로운 상황이 연출될 수 있습니다. 이를 방지하기 위해 운영체제는 인터럽트 처리 중에는 추가 인터럽트를 불가능하게 하거나, 내부 자료구조에 대한 동시 접근을 막기 위한 잠금 기법을 사용합니다.</p>
+<section id="id10">
+<h3>인터럽트 처리 중 인터럽트 발생의 문제<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>운영체제는 인터럽트나 트랩을 처리하는 도중에 또 다른 인터럽트가 발생할 경우를 매우 신중하게 다뤄야 합니다. 사실 이 주제는 운영체제에서의 병행성(concurrency)과 밀접한 관련이 있기에, 자세한 내용은 이 책의 후반부에서 다루도록 하겠습니다.</p>
+<p>운영체제가 취할 수 있는 가장 간단한 방법은 인터럽트를 처리하는 동안 추가 인터럽트를 막는 것입니다. 이렇게 하면 인터럽트 처리 루틴이 실행되는 동안에는 다른 인터럽트가 CPU로 전달되지 않습니다. 물론 운영체제는 이런 인터럽트 차단을 매우 신중하게 사용해야 합니다. 인터럽트를 너무 오랫동안 비활성화하면 중요한 이벤트를 놓칠 수 있고, 시스템 성능에도 안 좋은 영향을 줄 수 있거든요.</p>
+<p>운영체제는 또한 ‘락(lock)’이라고 불리는 정교한 기법들을 사용하여, 커널 내부의 자료구조에 동시에 접근하는 것을 방지합니다. 이런 락 메커니즘은 커널 내에서 여러 활동이 동시에 일어날 수 있도록 허용하면서도, 자료의 일관성을 유지할 수 있게 해줍니다. 하지만 병행성을 다루는 장에서 보게 될 것처럼, 이런 락 기법은 상당히 복잡해질 수 있고, 때로는 찾기 힘든 버그를 만들어내기도 합니다.</p>
+</section>
+</section>
+<section id="id11">
+<h2>정리<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<p>지금까지 우리는 CPU 가상화를 구현하기 위한 중요한 저수준 기법인 ‘제한적 직접 실행’에 대해 알아보았습니다. 이 기법의 핵심 아이디어는 간단합니다. 바로 실행하고자 하는 프로그램을 CPU에서 직접 실행시키되, 운영체제가 CPU 제어권을 잃지 않도록 프로세스의 행동에 제한을 걸어두는 것이죠.</p>
+<p>이런 접근 방식은 우리 일상생활에서도 찾아볼 수 있습니다. 아기가 있는 집이라면 아기 보호 장치를 설치하는 것에 익숙할 것입니다. 위험한 물건이 있는 서랍을 잠그고, 전기 콘센트에 안전 덮개를 씌우는 식으로요. 이렇게 안전 장치를 마련해 두면 대부분의 위험 요인은 차단되므로, 아기가 자유롭고 안전하게 돌아다닐 수 있습니다.</p>
+<p>운영체제도 이와 비슷한 방식으로 CPU에 안전 메커니즘을 마련합니다. 시스템이 부팅될 때 트랩 핸들러를 설정하고, 타이머 인터럽트를 시작시킨 다음, 프로세스들이 제한된 모드에서만 실행되도록 합니다. 이렇게 하면 운영체제는 프로세스를 효율적으로 실행시키면서도, 특별한 작업(프로세스의 CPU 독점, 다른 프로세스로의 전환 등)이 필요할 때만 개입할 수 있습니다.</p>
+<p>이로써 우리는 CPU 가상화의 기본 개념을 배웠습니다. 그러나 아직 중요한 질문이 남아 있습니다. “특정 시점에 어떤 프로세스를 실행해야 할까요?” 이는 운영체제의 스케줄러가 답해야 할 질문이며, 우리가 다음에 공부할 주제이기도 합니다.</p>
+<div class="admonition- admonition">
+<p class="admonition-title">리부팅의 유용성</p>
+<p>협조적 선점 방식에서는 프로세스가 무한 루프에 빠지는 등의 문제가 발생했을 때, 이를 해결할 수 있는 유일한 방법은 컴퓨터를 재부팅하는 것뿐이었습니다. 이는 단순하고 원시적인 방법처럼 보일 수 있지만, 연구에 따르면 재부팅이나 소프트웨어 재시작은 견고한 시스템을 구축하는 데 매우 효과적이라고 합니다[Can+04].</p>
+<p>구체적으로 말해, 재부팅은 다음과 같은 이유로 유용합니다:</p>
+<ol class="arabic simple">
+<li><p>소프트웨어를 이미 알려지고 검증된 상태로 되돌릴 수 있습니다.</p></li>
+<li><p>오래되거나 제어를 벗어난 자원을 시스템에 반환할 수 있습니다. 이런 자원들은 반환되지 않으면 처리하기 어려울 수 있습니다.</p></li>
+<li><p>재부팅 과정을 자동화하기 쉽습니다.</p></li>
+</ol>
+<p>이런 장점들로 인해, 대규모 클러스터 기반 인터넷 서비스를 관리하는 소프트웨어에서는 주기적으로 일부 컴퓨터를 재부팅하는 것이 일반적인 관행으로 자리 잡았습니다. 이를 통해 앞서 언급한 모든 이점을 얻을 수 있기 때문이죠.</p>
+<p>따라서 재부팅이 단순하고 원시적인 방법이라고 치부할 순 없습니다. 오히려 이는 컴퓨터 시스템의 안정성과 성능을 향상시키기 위해 충분히 검증되고 효과가 입증된 기법 중 하나라고 할 수 있습니다.</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./week02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cpu-api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">프로세스 API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="shells.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">리눅스 셸 (Linux Shells)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">기본 원리 : 제한적 직접 실행</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">문제점 1: 제한된 연산</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">핵심 질문: 프로세스가 제한된 연산을 수행하는 방법은 무엇인가?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">시스템 콜이 일반 함수 호출과 비슷해 보이는 이유</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">문제점 2: 프로세스 간 전환</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">협조적 스케줄링: 운영체제가 시스템 콜을 기다리는 방식</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu">비협조적 스케줄링: 운영체제가 강제로 CPU 제어권을 획득하는 방식</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">문맥 저장과 복원</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">병행성이 걱정</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">인터럽트 처리 중 인터럽트 발생의 문제</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">정리</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

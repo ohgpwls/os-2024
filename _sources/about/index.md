@@ -7,11 +7,10 @@
 ### 이영준
 
 ```{image} images/yjlee.jpeg
-:width: 130
+:width: 100
 :align: left
 ```
 
-- 전공: 경영학(박사), 경제학(석사), 정보산업공학(학사)
 - 관심분야: 인공지능, 자연어처리, Generative AI, Multimodal AI, Robotics, Sustainability
 - 주요담당분야: 자연어처리, 생성형 AI, 빅데이터, DevOps & MLOps
 - E-Mail: [yj.lee@chu.ac.kr](mailto:yj.lee@chu.ac.kr)
@@ -20,3 +19,58 @@
 ## Teaching Assistants
 
 ## Students
+
+### 박은성
+
+- 202121006
+- 202121006@chu.ac.kr
+
+### 박진우
+
+- 학번: 202321010
+- 202321010@chu.ac.kr
+
+### 오혜진
+
+- 202321012
+- ohj-0903@naver.com
+
+### 고다희
+
+- 본인소개
+- 본인 연락처
+
+### 이규범
+
+- 2024학년도 학회장입니다.
+- 202221014@chu.ac.kr
+
+### 양필성
+
+- 202121010
+- lal4995@naver.com
+
+### 조세현
+
+- 인공지능공학과 202321017
+- 202321017@chu.ac.kr
+
+### 김진우
+
+- 202321007
+- 202321006@chu.ac.kr
+
+### 장희선
+
+- 202021029
+- 202021029@chu.ac.kr
+
+### 이대건
+
+- 202021025
+- 202021025@chu.ac.kr
+
+### 김영준
+
+- 202321004
+- 202321004@chu.ac.kr

@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>데이터 무결성과 보호 &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'week14/data-integrity';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="파일 시스템 구현" href="fs-implementation.html" />
+    <link rel="prev" title="Week 14 - 영속성 2" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week02/index.html">Week 2 - 가상화의 세계</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week02/dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-mechanisms.html">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week03/index.html">Week 3 - 스케줄링 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week03/cpu-scheduling.html">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week03/hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week09/index.html">Week 9 - 메모리 가상화 4</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-tlbs.html">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Week 14 - 영속성 2</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">데이터 무결성과 보호</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fs-implementation.html">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/index.html">OS 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121010/index.html">Key-Value store project by ypilseong</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121010/homework.html">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/week14/data-integrity.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fweek14/data-integrity.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/week14/data-integrity.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>데이터 무결성과 보호</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">디스크 오류 모델</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-sector-errors">잠재적 섹터 오류(Latent Sector Errors)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">손상 검출 : 체크섬</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">널리 사용되는 체크섬 함수</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checksum-layout">Checksum Layout</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">체크섬의 활용</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">새로운 문제 : 잘못된 위치에 기록</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">마지막 문제 : 기록 작업의 손실</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrubbing">Scrubbing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">체크섬 오버헤드</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">요약</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id2">
+<h1>데이터 무결성과 보호<a class="footnote-reference brackets" href="#ypilseong" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h1>
+<section id="id3">
+<h2>디스크 오류 모델<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>RAID(Redundant Array of Independent Disks)에 대해 배웠던 장에서 알 수 있듯이, 디스크는 완벽하지 않으며 때로는 오류가 발생할 수 있습니다. 초기 RAID 시스템에서는 오류 모델이 비교적 단순했습니다. 디스크는 완전히 작동하거나 완전히 작동하지 않는 두 가지 상태만 있다고 가정했기 때문입니다. 이렇게 디스크의 고장을 쉽게 감지할 수 있는 특성을 실패 시 정지(fail-stop) 모델이라고 하며, 이 모델 덕분에 RAID 구현이 그리 어렵지 않았습니다.</p>
+<p>그러나 실제로는 디스크에서 두 가지 종류의 단일 블록 오류가 자주 발생합니다. 하나는 잠재적 섹터 오류(Latent Sector Error, LSE)이고 다른 하나는 블록 손상(Block Corruption)입니다. 이제 이 두 오류에 대해 자세히 알아보겠습니다.</p>
+<p>LSE는 디스크의 특정 섹터나 섹터 그룹이 어떤 이유로 손상되었을 때 발생합니다. 예를 들어, 디스크 헤드가 표면에 닿아서 (이를 헤드 크래시(head crash)라고 하며 정상적인 상황에서는 발생하면 안 됨) 디스크 표면이 손상되면 해당 부분의 비트를 읽을 수 없게 됩니다. 강한 방사선 또한 비트를 반전시켜 데이터를 왜곡시킬 수 있습니다.</p>
+<p>다행히도 대부분의 디스크는 ECC(Error Correcting Codes)를 사용하여 디스크 블록의 비트 무결성을 검사하고 경우에 따라 오류를 복구할 수 있습니다. 그러나 비트 상태가 좋지 않아서 ECC로도 복구할 수 없는 경우, 디스크는 해당 블록을 읽으려는 요청에 오류를 반환합니다.</p>
+<p>반면에 블록 손상은 디스크가 손상 여부를 인식하지 못한 채 데이터가 훼손되는 경우입니다. 이때는 잘못된 내용의 블록이 정상적으로 읽혀지게 됩니다. 예를 들어 디스크 펌웨어의 버그로 인해 잘못된 위치에 데이터를 썼다면, 디스크의 ECC는 문제가 없다고 판단하겠지만 사용자가 나중에 해당 블록을 읽으면 엉뚱한 내용이 반환될 것입니다. 전송 버스의 오류로 인해 호스트에서 디스크로 전송되는 도중 블록이 손상될 수도 있고, 그 손상된 데이터가 디스크에 그대로 저장될 수 있습니다.</p>
+<p>이런 블록 손상 오류를 무음 오류(silent fault)라고도 하는데, 디스크가 아무런 문제를 알리지 않은 채 잘못된 데이터를 반환하기 때문에 LSE보다 더 심각한 문제로 여겨집니다.</p>
+<p>그렇다면 이 두 종류의 오류는 실제로 얼마나 자주 발생할까요? Bairavasundaram 등이 수행한 두 연구에서 관찰된 결과를 요약해 보겠습니다. 아래 표는 연구 기간 동안 적어도 하나 이상의 LSE나 블록 손상이 발생한 드라이브의 비율을 보여줍니다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>에러 유형</p></th>
+<th class="head"><p>저가 드라이브</p></th>
+<th class="head"><p>고가 드라이브</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LSE</p></td>
+<td><p>9.4%</p></td>
+<td><p>1.4%</p></td>
+</tr>
+<tr class="row-odd"><td><p>블록 손상</p></td>
+<td><p>0.5%</p></td>
+<td><p>0.05%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>저가 드라이브보다 고가 드라이브를 사용하면 이 두 가지 문제의 발생 빈도를 크게 줄일 수 있음을 알 수 있습니다. 하지만 여전히 무시할 수 없는 수준으로 오류가 발생하고 있으므로, 스토리지 시스템 설계 시 이를 고려해야 합니다.</p>
+<p>LSE에 대한 연구에서는 다음과 같은 특징이 발견되었습니다.</p>
+<ul class="simple">
+<li><p>LSE가 발생한 고가 드라이브는 저가 드라이브와 비슷한 수준으로 추가 오류를 만들어냅니다.</p></li>
+<li><p>대부분 드라이브의 연간 LSE 발생률은 2년차에 증가합니다.</p></li>
+<li><p>LSE 발생률은 디스크 용량에 비례하여 증가합니다.</p></li>
+<li><p>LSE가 발생한 대부분의 디스크는 50개 미만의 LSE를 보유합니다.</p></li>
+<li><p>한 번 LSE가 발생한 디스크는 추가로 LSE가 더 발생할 가능성이 높아집니다.</p></li>
+<li><p>LSE는 공간적, 시간적 지역성(locality)을 보입니다.</p></li>
+<li><p>전체 디스크 스크러빙(disk scrubbing)이 LSE 탐지에 효과적입니다.</p></li>
+</ul>
+<p>블록 손상에 대해서는 다음과 같은 특징이 관찰되었습니다.</p>
+<ul class="simple">
+<li><p>같은 등급의 드라이브라도 모델에 따라 블록 손상 발생 확률이 크게 다릅니다.</p></li>
+<li><p>사용 기간에 따른 영향은 드라이브 모델마다 다르게 나타납니다.</p></li>
+<li><p>워크로드나 디스크 용량은 블록 손상 빈도에 큰 영향을 미치지 않습니다.</p></li>
+<li><p>블록 손상이 발생한 디스크 대부분은 손상된 블록을 소수만 가지고 있습니다.</p></li>
+<li><p>RAID 그룹 내 디스크들의 블록 손상이나 단일 디스크 내 블록 손상은 독립적이지 않습니다.</p></li>
+<li><p>LSE 발생과는 연관성이 크지 않습니다.</p></li>
+</ul>
+<p>이 주제에 대해 더 자세히 알고 싶다면 관련 논문을 직접 읽어보시기 바랍니다. 어쨌든 신뢰할 수 있는 스토리지 시스템을 만들기 위해서는 반드시 LSE와 블록 손상을 탐지하고 복구하는 기술을 갖추어야 할 것입니다.</p>
+</section>
+<section id="latent-sector-errors">
+<h2>잠재적 섹터 오류(Latent Sector Errors)<a class="headerlink" href="#latent-sector-errors" title="Link to this heading">#</a></h2>
+<p>그럼 이제 디스크의 부분 오류 두 가지에 대한 대응 방안을 알아보겠습니다. 먼저 다루기 쉬운 잠재적 섹터 오류(LSE)부터 시작하죠.</p>
+<p>사실 LSE는 쉽게 감지할 수 있기 때문에 그리 어렵지 않게 해결할 수 있습니다. 스토리지 시스템이 특정 블록에 접근하려 할 때 디스크에서 오류를 반환한다면, 중복 정보를 이용해서 어떻게든 올바른 데이터를 복구해 내면 됩니다. 예를 들어 미러링 RAID에서는 미러 사본에서 데이터를 가져올 수 있고, RAID-4나 RAID-5 같은 패리티 기반 시스템에서는 패리티 그룹 내 다른 블록들로부터 데이터를 재구성할 수 있습니다.</p>
+<p>즉, LSE처럼 감지하기 쉬운 오류에 대해서는 널리 알려진 중복 방식들을 통해 쉽게 복구할 수 있는 것입니다.</p>
+<p>LSE가 점점 더 빈번해지면서 지난 몇 년간 RAID 설계에도 변화가 있었습니다. RAID-4/5 시스템에서 발생 가능한 흥미로운 문제 중 하나는, 한 디스크가 완전히 고장 나는 동시에 다른 디스크에서 LSE가 발생하는 것입니다.</p>
+<p>디스크 한 개가 완전히 고장 나면 RAID는 패리티 그룹 내 모든 나머지 디스크를 읽어서 손실된 데이터를 재구성합니다. 그런데 재구성 도중 다른 디스크에서 LSE가 발생하면 재구성이 실패하게 되는 거죠.</p>
+<p>이 문제에 대응하기 위해 몇몇 시스템들은 추가적인 방법을 도입했습니다. 예를 들어 NetApp의 RAID-DP는 패리티 디스크를 두 개 사용합니다. 재구성 중 LSE가 발생해도 추가 패리티 정보를 이용해 복구를 마칠 수 있습니다.</p>
+<p>물론 추가 패리티 디스크를 두는 것은 상당한 비용이 드는 일입니다. 하지만 NetApp의 WAFL 파일 시스템은 로그 구조를 채택함으로써 그 비용을 여러 방면에서 상쇄하고 있습니다. 결과적으로 추가 패리티 블록에 필요한 디스크 공간만이 실질적인 비용으로 남게 됩니다.</p>
+</section>
+<section id="id4">
+<h2>손상 검출 : 체크섬<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>이제 데이터 손상을 통한 조용한 오류의 문제에 대해 알아봅시다. 어떻게 사용자가 손상된 데이터를 받는 일을 방지할 수 있을까요?</p>
+<p>숨은 섹터 에러와 달리, 손상 문제에서는 검출이 핵심 문제입니다. 어떻게 알 수 있을까요? 일단 알기만 한다면 복구는 이전과 같이 이뤄질 수 있습니다. 해당 블럭의 다른 복제본을 어딘가에 저장해놓고 쓰는 것입니다.</p>
+<p>현대 스토리지 시스템에서 데이터 무결성을 지키기 위해 쓰는 주 메커니즘은 *체크섬(checksum)*이라 불리는 것입니다. 체크섬은 데이터 청크를 입력으로, 해당 데이터의 내용의 작은 요약본을 출력하는 함수의 결과입니다. 이러한 계산의 목표는 데이터 체크섬을 저장해놨다가 나중에 해당 데이터에 대한 요청이 들어왔을 때 계산한 체크섬이 원래의 값과 일치하는지를 확인함으로써, 시스템이 데이터가 어떻게든 손상되거나 바뀌었는지를 확인하는 것입니다.</p>
+<section id="id5">
+<h3>널리 사용되는 체크섬 함수<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>체크섬 계산을 위해 쓰이는 함수에는 여러 가지가 있는데, 그 강도와 스피드에서 차이를 보입니다. 보호성이 높으면 비용도 커지는, 시스템에서 흔히 보이는 트레이드 오프가 여기서도 나타납니다.</p>
+<p>한 가지 간단한 체크섬 함수로는 XOR을 사용하는 것이 있습니다. XOR 기반 체크섬에서, 체크섬은 데이터 블럭의 각 청크들을 XOR함으로써 하나의 값을 만들어 냄으로써 계산됩니다.</p>
+<p>16바이트 블럭에 대해 4바이트 체크섬을 계산하려고 한다고 해봅시다. 16바이트의 데이터는 16진법으로 다음과 같다고 합니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">365</span><span class="n">e</span> <span class="n">c4cd</span> <span class="n">ba14</span> <span class="mi">8</span><span class="n">a92</span> <span class="n">ecef</span> <span class="mi">2</span><span class="n">c3a</span> <span class="mi">40</span><span class="n">be</span> <span class="n">f666</span>
+</pre></div>
+</div>
+<p>이진법으로 보면 다음과 같습니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0011</span> <span class="mi">0110</span> <span class="mi">0101</span> <span class="mi">1110</span>     <span class="mi">1100</span> <span class="mi">0100</span> <span class="mi">1100</span> <span class="mi">1101</span>
+<span class="mi">1011</span> <span class="mi">1010</span> <span class="mi">0001</span> <span class="mi">0100</span>     <span class="mi">1000</span> <span class="mi">1010</span> <span class="mi">1001</span> <span class="mi">0010</span>
+<span class="mi">1110</span> <span class="mi">1100</span> <span class="mi">1110</span> <span class="mi">1111</span>     <span class="mi">0010</span> <span class="mi">1100</span> <span class="mi">0011</span> <span class="mi">1010</span>
+<span class="mi">0100</span> <span class="mi">0000</span> <span class="mi">1011</span> <span class="mi">1110</span>     <span class="mi">1111</span> <span class="mi">0110</span> <span class="mi">0110</span> <span class="mi">0110</span>
+</pre></div>
+</div>
+<p>각 열에 대해 XOR을 수행했을 때의 최종 체크섬 값은 다음과 같습니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0010</span> <span class="mi">0000</span> <span class="mi">0001</span> <span class="mi">1011</span> <span class="mi">1001</span> <span class="mi">0100</span> <span class="mi">0000</span> <span class="mi">0011</span>
+</pre></div>
+</div>
+<p>16진법으로는 <code class="docutils literal notranslate"><span class="pre">0x201b9403</span></code>입니다.</p>
+<p>XOR은 쓸 만하지만 한계도 있습니다. 예를 들어 두 데이터 청크의 같은 위치에 있는 두 비트가 모두 바뀌는 경우, 체크섬을 통해서는 데이터 손상을 탐지할 수 없게 됩니다. 이러한 이유로 사람들은 다른 체크섬 함수들을 만들어냈습니다.</p>
+<p>다른 기초적인 체크섬 함수에는 덧셈이 있습니다. 이 방식은 빠르다는 장점을 가지고 있습니다. 데이터의 각 청크에 대해, 오버플로를 무시하고 2의 보수 덧셈을 수행하면되기 때문입니다. 이 기법은 많은 데이터 변경을 찾아낼 수 있지만, 데이터가 시프트된 경우에는 잘 검출해내지 못합니다.</p>
+<p>조금 더 복잡한 알고리즘은 <em>Fletcher checksum</em>이라 불리는 것입니다. 계산은 간단한데, 체크 바이트 <span class="math notranslate nohighlight">\(s_1\)</span>,<span class="math notranslate nohighlight">\(s_2\)</span> 를 이용합니다. 구체적으로, 블럭 <span class="math notranslate nohighlight">\(D\)</span> 가 바이트 <span class="math notranslate nohighlight">\(d_1\)</span>,…,<span class="math notranslate nohighlight">\(d_2\)</span> 으로 이루어져 있습니다고 합시다. <span class="math notranslate nohighlight">\(s_1\)</span> 과 <span class="math notranslate nohighlight">\(s_2\)</span> 는 각각 다음과 같이 정의됩니다.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+s_1 = (s_1 + d_i) \quad \text{mod}\;255\\
+s_2 = (s_2 + s_1)  \quad \text{mod}\;255
+\end{aligned}\end{split}\]</div>
+<p>Fletcher checksum은 거의 CRC만큼이나 강력해서, 모든 단일 비트, 두 비트 에러들도 찾아내고 그 외의 많은 에러들도 찾아냅니다.</p>
+<p>마지막으로 자주 쓰이는 체크섬으로는 *순환 중복 검사(cyclic redundancy check, CRC)*가 있습니다. 데이터 블럭 <span class="math notranslate nohighlight">\(D\)</span> 의 체크섬을 계산하려고 한다고 해봅시다. 이제 할 것은 그냥 <span class="math notranslate nohighlight">\(D\)</span> 를 큰 이진수로 보고, 이를 합의된 값 <span class="math notranslate nohighlight">\(k\)</span> 로 나누는 것입니다. 이 나눗셈의 나머지가 CRC 값이 됩니다.</p>
+<p>어떤 방법을 쓰든지 완벽한 체크섬은 없습니다. 서로 같지 않은 데이터 블럭들이 같은 체크섬을 가질 수도 있습니다(충돌, collision). 따라서 좋은 체크섬 함수를 정하려면, 이러한 충돌 가능성을 줄이면서도 계산하기 쉬운 방법을 찾아야 합니다.</p>
+</section>
+<section id="checksum-layout">
+<h3>Checksum Layout<a class="headerlink" href="#checksum-layout" title="Link to this heading">#</a></h3>
+<p>체크섬을 어떻게 계산하는지 알게 됐으니, 이제는 체크섬을 스토리지 시스템에서 어떻게 사용할지를 봅시다. 다뤄야 할 첫 번째 문제는 체크섬이 어떻게 디스크에 저장되어야 하는지에 대한 것입니다.</p>
+<p>가장 기본적인 방식은 체크섬을 각 디스크 섹터, 혹은 블럭에 저장하는 것입니다. 데이터 블럭 <span class="math notranslate nohighlight">\(D\)</span> 에 대해, 그 체크섬을 <span class="math notranslate nohighlight">\(C(D)\)</span> 라 부르도록 합시다. 체크섬이 없는 경우 디스크 레이아웃은 다음과 같습니다.</p>
+<p><img alt="img" src="../_images/image-1.png" /></p>
+<p>체크섬을 이용하면 다음과 같이 각 블럭에 하나의 체크섬이 추가됩니다.</p>
+<p><img alt="img" src="../_images/image-2.png" /></p>
+<p>다만 위와 같은 레이아웃을 만드는 데 문제가 하나 발생합니다. 보통 체크섬은 작고(8바이트), 디스크는 섹터 사이즈(512바이트), 혹은 그 배수의 청크들에만 쓸 수 있기 때문입니다. 한 가지 해결법은 드라이브 제조사에서 체크섬의 크기를 더한, 예를 들면 520바이트 섹터를 만드는 것입니다.</p>
+<p>그런 기능이 없는 디스크들의 경우에는 파일 시스템이 어떻게 체크섬을 저장할지를 결정해야 합니다. 한 가지 가능한 방법은 다음과 같습니다.</p>
+<p><img alt="img" src="../_images/image-3.png" /></p>
+<p>이 방식에서 n개의 체크섬은 하나의 섹터에 함께 저장되고, 그 뒤에는 n개의 데이터 블럭들이 저장됩니다. 이 방법은 모든 종류의 디스크에 적용할 수 있지만, 조금 덜 효율적일 수 있습니다. 만약 파일 시스템이 블럭 <span class="math notranslate nohighlight">\(D1\)</span> 을 덮어 쓰고 싶은 경우, <span class="math notranslate nohighlight">\(C(D1)\)</span> 이 있는 섹터를 읽고, 그 안의 <span class="math notranslate nohighlight">\(C(D1)\)</span> 을 갱신하고, 체크섬 섹터와 새 데이터 블럭 D1을 써야 합니다. 이와 달리 각 섹터에 체크섬의 자리가 마련된 앞의 경우는 한 번만 쓰면 됩니다.</p>
+</section>
+</section>
+<section id="id6">
+<h2>체크섬의 활용<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>위와 같이 체크섬 레이아웃이 정해졌다면, 어떻게 체크섬을 사용할지에 대해 알아봅시다. 블럭 D를 읽을 때, 클라이언트(파일 시스템, 혹은 스토리지 컨트롤러)는 저장된 해당 블럭의 체크섬 <span class="math notranslate nohighlight">\(C_s(D)\)</span> 도 읽습니다. 이후 클라이언트는 블럭 <span class="math notranslate nohighlight">\(D\)</span> 의 체크섬 <span class="math notranslate nohighlight">\((C_c(D))\)</span> 을 계산하고, 두 체크섬을 비교합니다. 만약 그 둘이 같으면 데이터가 손상되지 않은 것이라 판단하고 사용자에게 해당 데이터를 반환하고, 그렇지 않다면 데이터가 저장된 시점 이후에 변경되었다는 말입니다. 이 경우 데이터 손상이 일어나 것이라 할 수 있습니다.</p>
+<p>그렇다면 손상이 일어난 경우에는 뭘 해야할까? 만약 스토리지 시스템이 중복 복제본이 있습니다면 나머지 복제본을 사용하면 됩니다. 만약 그런 복제본이 없다면? 에러를 반환합니다. 어떤 경우든, 손상 여부를 검출했다고 해서 모든 일이 풀리는 것은 아닙니다. 손상되지 않은 데이터를 얻을 길이 없다면 운이 없다고 생각합시다.</p>
+</section>
+<section id="id7">
+<h2>새로운 문제 : 잘못된 위치에 기록<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>일반적인 경우 위의 기본 방식은 손상된 블럭들에 대해 잘 작동하지만, 현대 디스크들은 다른 해결법이 필요한, 흔치 않은 오류 모델들도 가지고 있습니다.</p>
+<p>첫 번째 오류 모델은 <em>misdirected write</em>라 불린다. 이는 디스크나 RAID 컨트롤러에서, 제대로 된 데이터를 다른 위치에 쓰는 경우 일어납니다. 예를 들면 단일 디스크 시스템에서 주소 <span class="math notranslate nohighlight">\(x\)</span> 에 쓰여야 하는 데이터 블럭 <span class="math notranslate nohighlight">\(D_x\)</span> 를 주소 <span class="math notranslate nohighlight">\(y\)</span> 에 쓰는 경우가 그렇습니다. 다중 디스크 시스템에서는 디스크 <span class="math notranslate nohighlight">\(i\)</span> 의 주소 <span class="math notranslate nohighlight">\(x\)</span> 에 써야하는 데이터를 디스크 <span class="math notranslate nohighlight">\(j\)</span> 에 쓰는 경우도 있습니다. 그렇다면 어떻게 이런 문제를 검출할 수 있을까요? 체크섬 이외로 필요한 것에는 무엇이 있을까요?</p>
+<p>놀랍게도 해결법은 간단합니다. 각 체크섬에 약간의 추가 정보들을 더하는 것입니다. 이 경우 *물리 식별자(physical identifier)*를 추가하는 게 도움이 됩니다. 예를 들어 저장된 정보가 체크섬과 더불어 디스크와 블럭의 섹터 번호도 가지고 있습니다면, 특정 위치에 제대로 된 정보가 들어있는지를 확인할 수 있습니다. 구체적으로 만약 클라이언트가 디스크 10의 블럭 4를 읽는 경우 <span class="math notranslate nohighlight">\((D10.4)\)</span>, 저장된 정보는 디스크 번호와 섹터 오프셋도 포함합니다. 만약 정보가 일치하지 않으면, 잘못된 위치에 쓴 것이 되므로 데이터 손상이 검출됩니다.</p>
+<p><img alt="img" src="../_images/image-4.png" /></p>
+<p>이제 디스크에 많은 중복 정보들이 포함되었음을 볼 수 있습니다. 각 블럭에 디스크 번호가 각 블럭에서 반복되고, 블럭의 오프셋도 해당 블럭에 들어있습니다. 이런 중복 정보들이 에러 검출과 복구의 핵심입니다. 약간의 추가 정보들을 통해 일어날지도 모르는 문제적 상황들을 찾아낼 수 있게 됩니다.</p>
+</section>
+<section id="id8">
+<h2>마지막 문제 : 기록 작업의 손실<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p>또 다른 문제도 있습니다. 구체적으로 몇몇 현대 저장 장치들은 lost write라 불리는 문제도 가지고 있습니다. 이는 장치가 상위 계층에는 쓰기 작업이 완료되었다고 알리면서도, 사실은 아무 것도 저장되지 않았을 때 발생하는 문제입니다. 이 경우 디스크에는 갱신되지 않은, 오래된 내용의 블럭만이 남게 됩니다.</p>
+<p>문제는 이 경우, 위와 같이 체크섬이나 물리 ID를 사용하는 방법으로는 위 이슈를 발견할 수 없다는 것입니다. 그렇다면 이 문제는 어떻게 알아낼 수 있을까요?</p>
+<p>가능한 해결법에는 여러 가지가 있지만, 한 가지 고전적인 방식으로는 쓰기 검증(write verify), 혹은 쓴 후 읽기(read-after-write)를 수행하는 것입니다. 쓰기가 끝나면 바로 해당 내용을 읽음으로써 시스템은 원하던 데이터가 디스크 표면까지 도달했는지를 확인하는 것입니다. 하지만 이 방식은 상당히 느립니다. 쓰기 작업을 완료하기 위해 필요한 I/O의 수를 두 배로 늘리기 때문입니다.</p>
+<p>어떤 시스템들은 lost write를 찾기 위한 체크섬을 시스템 어디엔가 추가하기도 합니다. 예를 들어 Sun의 Zettabyte File System(ZFS)의 경우, 각 파일 시스템 아이노드 및 해당 파일에 포함된 모든 블럭의 간접 블럭에 체크섬을 추가합니다. 이렇게 하면 데이터 블럭에의 쓰기 자체가 손실되더라도 아이노드 내의 체크섬이 오래된 데이터와 맞지 않게 될 것이기 때문에 위와 같은 문제를 알아낼 수 있습니다. 아이노드와 데이터로의 쓰기가 동시에 모두 실패하는 경우에는 마찬가지의 문제가 발생할 수 있지만, 흔치는 않습니다</p>
+</section>
+<section id="scrubbing">
+<h2>Scrubbing<a class="headerlink" href="#scrubbing" title="Link to this heading">#</a></h2>
+<p>그렇다면 이 체크섬들이 실제로 확인되는 건 언제일까? 물론 어느 정도는 애플리케이션이 데이터에 접근할 때 일어날 수도 있지만, 이 경우 대부분의 데이터는 거의 접근되지 않기 때문에 확인되지 않은 채로 남게 됩니다. 확인되지 않은 데이터는 신뢰성 있는 스토리지 시스템에 문제가 될 수 있습니다. 조금의 흠이 전체 데이터에 영향을 줄 수도 있기 때문입니다.</p>
+<p>이 문제를 해결하기 위해, 많은 시스템들은 *디스크 스크러빙(disk scrubbing)*을 이용합니다. 주기적으로 시스템 내 모든 블럭을 읽고 체크섬이 여전히 유효한지 확인함으로써, 디스크 시스템은 특정 데이터 아이템의 모든 복사본들이 손상되는 경우를 줄일 수 있게 됩니다. 보통의 시스템들은 매일 밤, 혹은 매 주 이러한 작업을 스케줄링 해놓습니다.</p>
+</section>
+<section id="id9">
+<h2>체크섬 오버헤드<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>데이터 보호를 위한 체크섬 사용의 오버헤드에는 무엇이 있을까요? 두 가지가 있습니다. 공간과 시간입니다.</p>
+<p>공간 오버헤드로도 두 가지가 있습니다. 첫 번째는 디스크 자체에 대한 것입니다. 각 저장된 체크섬은 디스크 내 공간을 차지합니다. 보통은 4KB 데이터 블럭에 대해 8바이트 체크섬을 사용하고, 0.19%의 디스크 공간 오버헤드가 발생합니다.</p>
+<p>다른 종류로는 시스템 메모리에서 발생합니다. 데이터에 접근할 때, 이제는 데이터 뿐만 아니라 체크섬을 위한 공간도 필요합니다. 하지만 만약 시스템이 단순히 체크섬을 확인하고 이후 버린다면, 이러한 오버헤드는 오랫동안 유지되지는 않기 때문에 크게 걱정할 일이 아닙니다. 오직 체크섬이 메모리에 남는 경우에만 이 작은 오버헤드는 영향을 주게 됩니다.</p>
+<p>이렇듯 공간적 오버헤드는 작지만, 체크섬으로 인한 시간적 오버헤드는 상당합니다. 적어도 CPU는 데이터를 쓰거나 읽을 때 각 블럭에 대한 체크섬을 계산해야 합니다. 이런 CPU 오버헤드를 줄이기 위해 많은 시스템들이 사용하는 방법은 데이터 복사와 체크섬 계산을 한 번에 처리하는 것입니다. 복사는 어쨌든 일어나야 하기 떄문에, 복사와 체크섬 계산을 함께 하는 것은 상당히 효과적입니다.</p>
+<p>CPU 오버헤드 외에도 체크섬 방식에 따라 추가적인 I/O 오버헤드가 발생할 수 있는데, 특히 체크섬이 데이터와 별개로 저장되는 경우, 그리고 백그라운드 스크러빙을 수행해야 하는 경우 등이 있습니다. 전자의 경우는 설계를 통해 오버헤드가 줄어들 수 있고, 후자의 경우는 언제 스크러빙이 일어날지를 조정하는 등을 통해 줄어들 수 있습니다.</p>
+</section>
+<section id="id10">
+<h2>요약<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p>우리는 체크섬의 구현과 사용을 중심으로 저장 장치에서 데이터를 보호하는 기법을 소개하였습니다. 체크섬은 종류에 따라 서로 다른 종류의 오류를 해결합니다. 저장 장치가 발전하면서 여지이 새로운 오류의 종류가 생겨날 일입니다. 그러한 변화에 대응하기 위하여 기ᨦ과 연구자들은 기존 기법들을 근본적으로 재설계하거나 전혀 새로운 기법들을 개발해야 할지도 모릅니다.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="ypilseong" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/ypilseong">양필성</a></p>
+</aside>
+</aside>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./week14"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 14 - 영속성 2</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fs-implementation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">파일 시스템 구현</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">디스크 오류 모델</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-sector-errors">잠재적 섹터 오류(Latent Sector Errors)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">손상 검출 : 체크섬</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">널리 사용되는 체크섬 함수</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checksum-layout">Checksum Layout</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">체크섬의 활용</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">새로운 문제 : 잘못된 위치에 기록</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">마지막 문제 : 기록 작업의 손실</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrubbing">Scrubbing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">체크섬 오버헤드</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">요약</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

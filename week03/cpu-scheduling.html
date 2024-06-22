@@ -1,0 +1,938 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>스케줄링: 개요 &#8212; 운영체제 2024</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-examples.css?v=e236af4b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-BQJE5V9RK2"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BQJE5V9RK2');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": "\\mathbb{N}", "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'week03/cpu-scheduling';</script>
+    <link rel="icon" href="https://assets.entelecheia.ai/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lab: 프로세스 생성과 실행 기초" href="lab.html" />
+    <link rel="prev" title="Week 3 - 스케줄링 1" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content">6/11일(화) 15:00에 보강 있습니다. 기말 프로젝트 제출 마감은 6/22일(토) 23:59입니다.</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">운영체제 2024</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Home
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lecture Notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week01/index.html">Week 1 - 아주 쉬운 세가지 이야기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week01/dialogue.html">이 책에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week01/intro.html">운영체제 개요</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://learn.microsoft.com/ko-kr/windows/wsl/install">WSL 설치방법</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week02/index.html">Week 2 - 가상화의 세계</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week02/dialogue.html">가상화에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-intro.html">프로세스의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-api.html">프로세스 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/cpu-mechanisms.html">제한적 직접 실행 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/shells.html">리눅스 셸 (Linux Shells)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/lab.html">Lab: Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/tip.html">Tip: 리눅스 프로세스 관리 명령어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week02/hw-wk02.html">Homework: 프로세스</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Week 3 - 스케줄링 1</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">스케줄링: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lab.html">Lab: 프로세스 생성과 실행 기초</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wsl-setup.html">WSL에서 Ubuntu 환경구축 및 GitHub 설정하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hw-wk03.html">Homework: 스케줄링</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week04/index.html">Week 4 - 스케줄링 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week04/mlfq.html">스케줄링: 멀티 레벨 피드백 큐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lottery.html">스케줄링: 비례 배분</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/summary.html">CPU 가상화 마무리 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-sched.html">Lab: 스케줄링 알고리즘 시뮬레이터</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/lab-lottery.html">Lab: Lottery 스케줄링 알고리즘 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week04/hw-wk04.html">Homework: 비례 배분</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week05/index.html">Week 5 - 메모리 가상화 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-intro.html">주소 공간의 개념</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/vm-api.html">메모리 관리 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/lab.html">Lab: 메모리 구조 탐색하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week05/tip-linux-cmd.html">Tip: Linux 기본 명령어</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week06/index.html">Week 6 - 메모리 가상화 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-mechanism.html">주소 변환의 원리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/vm-segmentation.html">세그멘테이션 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/lab.html">Lab: 주소 변환 시뮬레이션</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week06/hw-wk06.html">Homework: 주소 변환의 원리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week07/index.html">Week 7 - 메모리 가상화 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week07/vm-freespace.html">빈 공간 관리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week07/hw-wk07.html">Homework: 빈 공간 관리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week09/index.html">Week 9 - 메모리 가상화 4</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-paging.html">페이징: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-tlbs.html">페이징: 더 빠른 변환 (TLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/vm-swap.html">물리 메모리 크기의 극복: 메커니즘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week09/summary.html">메모리 가상화를 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week10/index.html">Week 10 - 병행성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week10/dialogue.html">병행성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-intro.html">병행성: 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week10/threads-api.html">쓰레드 API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week11/index.html">Week 11 - 병행성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks.html">락 </a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week11/threads-locks-usage.html">락 기반의 병행 자료 구조</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week12/index.html">Week 12 - 병행성 3</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-cv.html">컨디션 변수</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/threads-sema.html">세마포어</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week12/summary.html">병행성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week13/index.html">Week 13 - 영속성 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week13/dialogue.html">영속성에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-devices.html">I/O 장치</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week13/file-directory.html">파일과 디렉터리</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week14/index.html">Week 14 - 영속성 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week14/data-integrity.html">데이터 무결성과 보호</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/fs-implementation.html">파일 시스템 구현</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week14/summary.html">영속성을 정리하는 대화</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../week15/index.html">Week 15 - 분산</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dialogue.html">분산에 관한 대화</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/dist-intro.html">분산 시스템</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../week15/summary.html">분산을 정리하는 대화</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/index.html">OS 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121006/index.html">reverse 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk06.html">Week 6 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121006/hw-wk07.html">Week 7 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202121010/index.html">Key-Value store project by ypilseong</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202121010/homework.html">Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202221014/index.html">프로젝트: Key-Value Store 구현</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202221014/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321007/index.html">리버스 프로젝트 개요</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/202321010/index.html">reverse 프로젝트</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../projects/202321017/index.html">grep 프로젝트</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk02.html">Week 2 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk03.html">Week 3 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk04.html">Week 4 Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../projects/202321017/hw-wk06.html">Week 6 Homework</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../projects/contents/index.html">프로젝트 과제 목록</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/utilities.html">유닉스 유틸리티 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/reverse.html"><code class="docutils literal notranslate"><span class="pre">reverse</span></code> 프로젝트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/contents/kv.html"><code class="docutils literal notranslate"><span class="pre">kv</span></code> 프로젝트: 간단한 키-값 저장소</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/lab-tutorial.html">Lab 튜토리얼</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tester.html">프로젝트 테스터</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/setup.html">프로젝트 환경설정</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep/index.html">OSTEP (Korean Version)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-code/index.html">ostep-code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-homework/index.html">Homeworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/ostep-projects/index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://kuleuven-diepenbeek.github.io/osc-course/">Operating Systems and C</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../syllabus/index.html">수업계획서</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">만든 사람들</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://halla.ai">인공지능학과</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://os2024.halla.ai">운영체제 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mlops2024.halla.ai">머신러닝시스템 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://cobots2024.halla.ai">협동로봇활용 2024</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://aibasics.halla.ai">AI 세상 속으로</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/edit/main/src/os2024/book/week03/cpu-scheduling.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/chu-aie/os-2024/issues/new?title=Issue%20on%20page%20%2Fweek03/cpu-scheduling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/week03/cpu-scheduling.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>스케줄링: 개요</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">워크로드에 대한 가정</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">스케줄링 평가 항목</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">선입선출</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">장점</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">단점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">최단 작업 우선</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">최소 잔여시간 우선</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">새로운 평가 기준 : 응답 시간</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">라운드 로빈</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">입출력 연산의 고려</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-more-oracle">만병통치약은 없다 (No More Oracle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">요약</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>스케줄링: 개요<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>이제 프로세스를 실행하기 위해 필요한 문맥 교환(Context Switch)과 같은 저수준 기술에 대해 명확히 이해하고 있어야 합니다. 만약 이러한 기술들의 동작 방식에 대해 잘 모르겠다면, 앞서 배운 내용을 다시 복습하는 것이 좋습니다. 또한, 운영체제 스케줄러의 고수준 정책에 대한 이해도 필요합니다.</p>
+<p>지금부터는 다양한 스케줄링 정책(Scheduling Policy)을 소개하고, 이에 대한 이해를 높이는 데 집중하겠습니다. 이러한 정책은 스케줄링 기법(Scheduling Discipline)이라고도 불리며, 많은 優秀하고 부지런한 연구자들이 오랜 시간 동안 개발해 온 것들입니다.</p>
+<p>사실, 스케줄링의 기원은 컴퓨터 시스템이 개발되기 이전으로 거슬러 올라갑니다. 초기의 스케줄링 방법들은 생산 관리(Production Management) 분야에서 개발되었고, 이후 컴퓨터 시스템에 적용되었습니다. 이는 그리 놀라운 일이 아닙니다. 생산 공정과 인간의 다양한 활동에서도 스케줄링이 필요하고, 효율성 향상과 같은 공통된 목표를 가지고 있기 때문입니다.</p>
+<p>우리가 해결해야 할 핵심 질문은 다음과 같습니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1. 스케줄링 정책은 어떻게 개발할 수 있을까요?
+2. 스케줄링 정책을 설계하기 위한 기본적인 프레임워크는 무엇일까요?
+3. 정책 개발에 필요한 핵심 가정은 무엇일까요?
+4. 어떤 평가 기준이 중요할까요?
+5. 컴퓨터 시스템 초창기에 사용된 기본 접근 방식은 무엇일까요?
+</pre></div>
+</div>
+<p>이러한 질문에 대한 답을 찾아가면서, 스케줄링 정책의 개발 과정과 그 기반이 되는 개념들을 이해할 수 있을 것입니다. 이를 통해 운영체제의 스케줄링 메커니즘에 대한 포괄적인 지식을 갖추게 될 것입니다.</p>
+<section id="id3">
+<h2>워크로드에 대한 가정<a class="footnote-reference brackets" href="#ji-nyu" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>스케줄링 정책을 개발하기에 앞서, 우리는 프로세스에 대해 몇 가지 가정을 해야 합니다. 이러한 가정들은 시스템에서 실행되는 프로세스들의 집합인 워크로드(Workload)를 정의하는 데 도움을 줍니다. 워크로드에 대해 잘 이해할수록 그에 맞는 최적의 스케줄링 정책을 설계할 수 있습니다.</p>
+<p>우리는 시스템에서 실행 중인 프로세스 또는 작업에 대해 다음과 같은 가정을 합니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">모든</span> <span class="n">작업의</span> <span class="n">실행</span> <span class="n">시간은</span> <span class="n">동일합니다</span><span class="o">.</span>
+
+   <span class="o">-</span> <span class="n">예를</span> <span class="n">들어</span><span class="p">,</span> <span class="n">모든</span> <span class="n">작업이</span> <span class="n">정확히</span> <span class="mi">10</span><span class="n">초</span> <span class="n">동안</span> <span class="n">실행된다고</span> <span class="n">가정합니다</span><span class="o">.</span>
+
+<span class="mf">2.</span> <span class="n">모든</span> <span class="n">작업은</span> <span class="n">동시에</span> <span class="n">시스템에</span> <span class="n">도착합니다</span><span class="o">.</span>
+
+   <span class="o">-</span> <span class="n">즉</span><span class="p">,</span> <span class="n">모든</span> <span class="n">작업이</span> <span class="n">시작</span> <span class="n">시점에</span> <span class="n">한꺼번에</span> <span class="n">도착한다는</span> <span class="n">것입니다</span><span class="o">.</span>
+
+<span class="mf">3.</span> <span class="n">각</span> <span class="n">작업은</span> <span class="n">한</span> <span class="n">번</span> <span class="n">시작되면</span> <span class="n">중간에</span> <span class="n">중단되지</span> <span class="n">않고</span> <span class="n">완료될</span> <span class="n">때까지</span> <span class="n">실행됩니다</span><span class="o">.</span>
+
+   <span class="o">-</span> <span class="n">작업이</span> <span class="n">실행되는</span> <span class="n">동안</span> <span class="n">다른</span> <span class="n">작업으로</span> <span class="n">전환되지</span> <span class="n">않습니다</span><span class="o">.</span>
+
+<span class="mf">4.</span> <span class="n">모든</span> <span class="n">작업은</span> <span class="n">오직</span> <span class="n">CPU</span> <span class="n">자원만</span> <span class="n">사용합니다</span><span class="o">.</span>
+
+   <span class="o">-</span> <span class="n">작업</span> <span class="n">실행</span> <span class="n">중에는</span> <span class="n">입출력</span><span class="p">(</span><span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="p">)</span> <span class="n">작업이</span> <span class="n">발생하지</span> <span class="n">않는다고</span> <span class="n">가정합니다</span><span class="o">.</span>
+
+<span class="mf">5.</span> <span class="n">각</span> <span class="n">작업의</span> <span class="n">실행</span> <span class="n">시간은</span> <span class="n">스케줄러가</span> <span class="n">미리</span> <span class="n">알고</span> <span class="n">있습니다</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">스케줄러는</span> <span class="n">작업의</span> <span class="n">실행</span> <span class="n">시간을</span> <span class="n">사전에</span> <span class="n">파악하고</span> <span class="n">있다고</span> <span class="n">가정합니다</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>하지만 이러한 가정들은 현실 세계와는 거리가 멉니다. 특히 작업의 실행 시간을 미리 알고 있다는 가정은 매우 비현실적입니다. 이는 마치 스케줄러가 모든 것을 알고 있다고 가정하는 것과 같습니다.</p>
+<p>이러한 가정들은 스케줄링 정책을 단순화하여 이해하기 쉽게 만들어 주지만, 실제 시스템에 적용할 때는 현실적인 제약 사항들을 고려해야 합니다. 그럼에도 불구하고, 이 가정들은 스케줄링 정책의 기본 개념을 이해하는 데 도움을 줍니다.</p>
+</section>
+<section id="id4">
+<h2>스케줄링 평가 항목<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>스케줄링 알고리즘을 평가하기 위해서는 워크로드에 대한 가정뿐만 아니라 평가 기준도 정해야 합니다. 스케줄링 분야에서는 다양한 평가 기준이 사용되지만, 여기서는 간단히 반환 시간(turnaround time)이라는 하나의 척도만 살펴보겠습니다.</p>
+<p>반환 시간이란 어떤 작업이 시스템에 도착한 시점부터 완료되는 시점까지 걸린 총 시간을 말합니다. 수식으로 표현하면 다음과 같습니다.</p>
+<p><span class="math notranslate nohighlight">\(T_{turnaround} = T_{completion} - T_{arrival}\)</span></p>
+<p>여기서 <span class="math notranslate nohighlight">\(T_{turnaround}\)</span>은 반환 시간, <span class="math notranslate nohighlight">\(T_{completion}\)</span>은 작업 완료 시각, <span class="math notranslate nohighlight">\(T_{arrival}\)</span>은 작업 도착 시각입니다.</p>
+<p>지금은 모든 작업이 동시에 도착한다고 가정하므로 <span class="math notranslate nohighlight">\(T_{arrival} = 0\)</span>이라 할 수 있습니다. 따라서 반환 시간은 곧 작업 완료 시각과 같아집니다. 나중에는 이 가정을 완화해 나가도록 하겠습니다.</p>
+<p>반환 시간은 시스템의 성능 측면에서 본 척도라는 점에 주목할 필요가 있습니다. 또 다른 중요한 기준으로는 공정성(fairness)이 있는데, 이는 Jain’s Fairness Index와 같은 지표로 측정될 수 있습니다.</p>
+<p>스케줄링에서 성능과 공정성은 종종 상충되는 목표가 됩니다. 예를 들어 스케줄러가 시스템 성능을 극대화하기 위해 일부 작업을 오랫동안 미루게 되면, 그만큼 공정성은 나빠지게 됩니다. 안타깝게도 우리 삶의 많은 부분이 그렇듯 모든 것을 다 잡기란 쉽지 않습니다.</p>
+</section>
+<section id="id6">
+<h2>선입선출<a class="footnote-reference brackets" href="#ypilseong" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>선입선출(First-Come, First-Served)은 가장 간단한 스케줄링 알고리즘 중 하나입니다. 이 알고리즘은 작업이 도착한 순서대로 실행되는 방식으로, 먼저 도착한 작업이 먼저 실행되고, 그 다음으로 도착한 작업이 실행됩니다.</p>
+<a class="reference internal image-reference" href="../_images/fcfs.png"><img alt="../_images/fcfs.png" class="align-center" src="../_images/fcfs.png" style="width: 80%;" /></a>
+<p>선입선출 스케줄링은 비선점형 스케줄링이므로 프로세스가 자발적으로 CPU를 반납할 때 까지 CPU를 빼앗지 않습니다.</p>
+<div class="admonition- admonition">
+<p class="admonition-title">비선점형 스케줄링</p>
+<p>실행 중인 프로세스가 CPU를 점유하고 있을 때 다른 프로세스가 CPU를 빼앗을 수 없는 방식입니다.</p>
+<p>예를 들어, 실행 중인 프로세스가 입출력 작업을 요청하거나 종료될 때까지 CPU를 계속 사용합니다.
+이렇게 하면, 프로세스의 교체가 적게 일어나서 오버헤드가 줄고, 실행 순서가 예측하기 쉽습니다.
+하지만 긴 작업이 CPU를 오랫동안 점유하면 다른 작업들이 오래 기다려야 합니다.</p>
+<p>비전형 스케줄링의 예로는 선입선출(FIFO), 최단 작업 우선 스케줄링(SJF) 등이 있습니다.</p>
+</div>
+<p>예를 들어, 프로세스 A, B, C가 각각 3초, 5초, 2초의 서비스 시간을 가지고 있고, A가 먼저 도착하고 B가 그 다음에 도착하고 C가 마지막에 도착한다면, FCFS 스케줄링은 다음과 같은 순서로 프로세스를 실행합니다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>프로세스</p></th>
+<th class="head text-center"><p>서비스 시간</p></th>
+<th class="head text-center"><p>대기 시간</p></th>
+<th class="head text-center"><p>응답 시간</p></th>
+<th class="head text-center"><p>반환 시간</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>A</p></td>
+<td class="text-center"><p>3초</p></td>
+<td class="text-center"><p>0초</p></td>
+<td class="text-center"><p>0초</p></td>
+<td class="text-center"><p>3초</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>B</p></td>
+<td class="text-center"><p>5초</p></td>
+<td class="text-center"><p>3초</p></td>
+<td class="text-center"><p>3초</p></td>
+<td class="text-center"><p>8초</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>C</p></td>
+<td class="text-center"><p>2초</p></td>
+<td class="text-center"><p>8초</p></td>
+<td class="text-center"><p>8초</p></td>
+<td class="text-center"><p>10초</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>이렇게 되면 평균 대기 시간은 (0 + 3 + 8) / 3 = 3.67초, 평균 응답 시간은 (0 + 3 + 8) / 3 = 3.67초, 평균 반환 시간은 (3 + 8 + 10) / 3 = 7초가 됩니다.</p>
+<section id="id7">
+<h3>장점<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>구현이 쉽습니다.</p></li>
+<li><p>선착순으로 처리하기 때문에 프로세스를 공평하게 처리할 수 있습니다.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>단점<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>짧은 작업이 긴 작업보다 늦게 도착하면 긴 작업을 기다려야 하므로 평균 대기 시간이 증가할 수 있습니다. 이를 호위 효과(convoy effect)라고 합니다.</p></li>
+<li><p>FCFS 스케줄링은 비선점형(nonpreemptive) 방식이므로 한 프로세스가 CPU를 점유하고 있으면 다른 프로세스는 CPU를 빼앗을 수 없습니다. 이는 CPU 사용률을 낮추고 I/O 바운드 프로세스의 대기 시간을 증가시킬 수 있습니다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h2>최단 작업 우선<a class="footnote-reference brackets" href="#parkeunseongkr" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a><a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p>이 문제는 ‘최단 작업 우선(Shortest Job First, SJF)’ 스케줄링 기법을 적용하면 쉽게 해결할 수 있습니다. SJF는 이름 그대로 실행 시간이 가장 짧은 작업을 가장 먼저 처리하는 방식인데, 사실 이 아이디어는 원래 운영 연구(Operations Research) 분야에서 유래한 것을 컴퓨터 시스템의 작업 스케줄링에 적용한 것입니다.</p>
+<p>모든 작업이 동시에 도착한다는 가정 하에서는 SJF가 최적(optimal)의 스케줄링 알고리즘임을 증명할 수 있습니다. 하지만 지금은 이론이나 운영 연구 수업이 아닌 시스템 수업이므로 증명은 생략하겠습니다.</p>
+<p>그런데 SJF라는 훌륭한 기법을 고안했음에도 불구하고, 앞서 세운 가정은 여전히 비현실적입니다.</p>
+<p>이 가정을 좀 더 현실에 가깝게 완화해 보기 위해, 다음과 같은 상황을 생각해 봅시다. 작업 A는 시간 0에 도착하고 실행 시간이 100초인 반면, 작업 B와 C는 시간 10에 도착하고 실행 시간은 각각 10초라고 합니다.</p>
+<p>순수한 SJF 스케줄링을 적용하면, B와 C가 A 바로 뒤인 시간 10에 도착함에도 불구하고 A가 끝날 때까지 기다려야만 합니다. 이렇게 되면 이전에 봤던 호위 효과(convoy effect) 문제가 다시 발생하게 됩니다.</p>
+<p>이 경우 평균 반환 시간은 다음과 같이 계산됩니다.</p>
+<p><span class="math notranslate nohighlight">\(\frac{100 + (110 - 10) + (120 - 10)}{3} = 103.33\)</span></p>
+<p>즉, <span class="math notranslate nohighlight">\((100 + 100 + 110) / 3 = 103.33\)</span>이 됩니다.</p>
+</section>
+<section id="id11">
+<h2>최소 잔여시간 우선<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<p>이 문제를 해결하기 위해 ‘최소 잔여시간 우선(Shortest Time-to-Completion First, STCF)’ 스케줄링 기법을 적용해 보겠습니다. 이 기법은 SJF를 조금 변형한 것인데, 작업의 총 실행 시간이 아니라 남아있는 실행 시간, 즉 잔여 실행 시간을 기준으로 삼는다는 점이 다릅니다.</p>
+<p>STCF에서는 새로운 작업이 시스템에 도착할 때마다 현재 실행 중인 작업의 잔여 실행 시간과 새 작업의 실행 시간을 비교합니다. 그리고 그 중 가장 짧은 잔여 실행 시간을 가진 작업을 선택하여 실행합니다. 필요하다면 현재 작업을 선점(preemption)하고 새 작업에게 CPU를 할당하는 것이죠.</p>
+<p>앞서 예시로 든 시나리오에서 STCF를 적용해 보면, 작업 A가 시작된 후 10초 시점에 B와 C가 도착했을 때, 스케줄러는 A를 선점하고 B 또는 C를 먼저 실행할 것입니다. B와 C는 실행 시간이 각각 10초로 동일하므로 둘 중 어느 것을 먼저 실행해도 상관없습니다. B와 C가 모두 끝난 후에야 비로소 A가 다시 스케줄되어 남은 시간 동안 실행을 이어나가게 됩니다.</p>
+<p>모든 작업이 동시에 도착하는 특별한 경우에는 SJF가 최적의 스케줄을 보장한다는 사실을 떠올려 봅시다. 그렇다면 작업들이 서로 다른 시간에 도착하는 일반적인 상황에서는 STCF가 최적이 될 것이라는 점을 직관적으로 이해할 수 있을 것입니다. STCF는 새 작업이 도착할 때마다 잔여 작업량을 재평가하여 그때그때 가장 적절한 프로세스를 선택하기 때문입니다.</p>
+</section>
+<section id="id12">
+<h2>새로운 평가 기준 : 응답 시간<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>STCF는 작업의 실행 시간을 미리 알고, CPU만을 사용하며, 반환 시간이라는 단일 평가 기준을 가정할 때는 매우 효과적인 스케줄링 정책입니다. 초기의 일괄 처리(batch processing) 시스템에서는 이런 알고리즘이 적절했습니다. 그러나 시분할(time-sharing) 시스템의 등장으로 상황이 달라졌습니다.</p>
+<p>이제 사용자들은 터미널을 통해 컴퓨터와 상호작용하게 되었고, 이에 따라 시스템의 응답성(responsiveness)이 중요한 성능 지표로 부상했습니다. 이를 반영하기 위해 ‘응답 시간(response time)’이라는 새로운 평가 기준이 도입되었는데, 이는 작업이 도착한 시점부터 실제로 처음 실행되기 시작할 때까지 걸린 시간을 말합니다.</p>
+<p>예를 들어 세 개의 작업 A, B, C가 동시에 도착했다고 합시다. STCF 스케줄링을 적용하면 실행 시간이 가장 긴 작업, 가령 C는 나머지 두 작업이 모두 끝날 때까지 기다려야 비로소 CPU를 할당받을 수 있습니다. 반환 시간 측면에서는 최적일 수 있지만, 응답 시간 측면에서 보면 형편없는 결과라 할 수 있겠죠.</p>
+<p>사용자와의 상호작용이 중요해진 상황에서 STCF는 더이상 적절한 스케줄링 기법이 아닙니다. 응답 시간을 개선하면서도 시스템의 전반적인 성능을 높일 수 있는 새로운 스케줄링 알고리즘이 필요해진 것입니다.</p>
+</section>
+<section id="id13">
+<h2>라운드 로빈<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<p>응답 시간 문제를 해결하기 위해 ‘라운드 로빈(Round Robin, RR)’ 스케줄링이라는 새로운 알고리즘이 도입되었습니다.</p>
+<p>RR에서는 각 작업이 완료될 때까지 기다리지 않고, 대신 정해진 시간 동안만 실행한 후 다음 작업으로 전환합니다. 이때 각 작업에 할당되는 실행 시간을 ‘타임 슬라이스(time slice, ts)’ 또는 ‘스케줄링 퀀텀(scheduling quantum, sq)’이라고 부릅니다. 이 과정은 모든 작업이 끝날 때까지 계속 반복되는데, 이런 특성 때문에 RR을 ‘타임 슬라이싱(time slicing)’이라고도 합니다.</p>
+<p>타임 슬라이스의 길이는 타이머 인터럽트 주기의 배수로 설정해야 합니다. 예를 들어 타이머 인터럽트가 10밀리초(msec)마다 발생한다면, 타임 슬라이스는 10, 20, 30 등 10의 배수로 정해질 수 있습니다.</p>
+<p>RR 스케줄링에서 타임 슬라이스의 길이는 매우 중요한 요소입니다. 일반적으로 타임 슬라이스가 짧을수록 응답 시간 측면에서의 성능은 좋아집니다. 그러나 너무 짧게 설정하면 문맥 교환(context switch) 오버헤드가 전체 성능에 부정적인 영향을 미칠 수 있습니다.</p>
+<p>따라서 시스템 설계자는 문맥 교환에 드는 비용과 응답 시간 개선 효과를 고려하여 최적의 타임 슬라이스 길이를 결정해야 합니다. 이는 해당 시스템의 특성과 워크로드에 따라 달라질 수 있는 중요한 튜닝 포인트 중 하나입니다.</p>
+</section>
+<section id="id14">
+<h2>입출력 연산의 고려<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<p>지금까지는 CPU 작업만 고려했지만, 실제 시스템에서는 입출력(I/O) 작업도 빈번하게 발생합니다. 이는 스케줄링에 또 다른 도전 과제를 제기합니다.</p>
+<p>어떤 프로세스가 I/O 작업을 요청하면, 그 프로세스는 I/O가 완료될 때까지 CPU를 사용하지 않습니다. 대신 I/O 작업이 끝나기를 기다리면서 ‘대기(blocked)’ 상태로 전환됩니다. 특히 하드 디스크 드라이브 같은 장치에 I/O 요청을 보냈다면, 현재의 I/O 부하에 따라 몇 초 또는 그 이상 블록 상태로 남아있게 됩니다.</p>
+<p>이때 스케줄러의 역할은 블록된 프로세스 대신 실행할 다른 프로세스를 선택하는 것입니다. 이를 통해 CPU가 쉬지 않고 일할 수 있도록 해야 하죠.</p>
+<p>반대로, I/O 작업이 완료되면 스케줄러는 또 다른 결정을 내려야 합니다. I/O 완료는 인터럽트를 발생시키고, 이를 처리하기 위해 운영체제가 실행됩니다. 운영체제는 I/O를 요청했던 프로세스를 대기 상태에서 준비(ready) 상태로 전환시킵니다. 여기서 스케줄러는 해당 프로세스를 바로 실행할 것인지, 아니면 다른 프로세스에게 CPU를 할당할 것인지 결정합니다.</p>
+<p>이렇듯 I/O 작업은 스케줄링 문제를 더욱 복잡하게 만듭니다. 스케줄러는 CPU 사용 패턴뿐만 아니라 I/O 특성까지 고려하여 적절한 프로세스를 선택해야 합니다. 이를 통해 전체 시스템의 CPU 활용도와 응답성을 높이는 것이 목표입니다.</p>
+</section>
+<section id="no-more-oracle">
+<h2>만병통치약은 없다 (No More Oracle)<a class="headerlink" href="#no-more-oracle" title="Link to this heading">#</a></h2>
+<p>이제 입출력을 고려한 기본적인 스케줄링 접근 방식에 대해 살펴보았으니, 마지막으로 남은 가정에 대해 생각해 봅시다. 바로 스케줄러가 각 작업의 실행 시간을 미리 알고 있다는 가정인데, 앞서 언급했듯이 이는 아마도 우리가 할 수 있는 가정 중 가장 비현실적인 것일 겁니다.</p>
+<p>사실 범용 운영체제에서는 개별 작업의 실행 시간을 정확히 예측하는 것이 거의 불가능합니다. 프로세스의 행동은 입력 데이터, 사용자 상호작용, 외부 이벤트 등 다양한 요인에 따라 달라지기 때문이죠.</p>
+<p>그렇다면 작업의 실행 시간에 대한 사전 지식 없이도 SJF나 STCF처럼 동작하는 스케줄링 알고리즘을 만들 수 있을까요? 나아가 이런 알고리즘에 라운드 로빈에서 봤던 것처럼 응답 시간을 개선하는 아이디어도 접목시킬 수 있을까요?</p>
+<p>안타깝게도 이 모든 조건을 완벽히 만족시키는 만병통치약 같은 솔루션은 존재하지 않습니다. 스케줄러가 완벽한 정보를 가질 수 없는 상황에서는 어떤 알고리즘을 사용하더라도 트레이드오프가 발생할 수밖에 없습니다.</p>
+<p>하지만 현대의 스케줄러들은 과거의 실행 이력, 휴리스틱, 피드백 등을 활용하여 이 문제에 대한 나름의 해법을 모색하고 있습니다. 비록 최적解는 아닐지라도, 주어진 환경에서 최선의 성능을 끌어내기 위해 노력하고 있는 것이죠. 다음 장에서는 이런 아이디어들을 적용한 몇 가지 실제 스케줄링 알고리즘을 소개하도록 하겠습니다.</p>
+</section>
+<section id="id15">
+<h2>요약<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
+<p>이번 장에서는 스케줄링의 기본 개념과 두 가지 주요 접근 방식에 대해 알아보았습니다.</p>
+<p>첫 번째 접근법은 SJF(Shortest Job First)와 STCF(Shortest Time-to-Completion First)로 대표되는데, 남은 작업들 중 실행 시간이 가장 짧은 것을 우선적으로 처리함으로써 전체 반환 시간(turnaround time)을 최소화하는 것이 목표입니다.</p>
+<p>두 번째 접근법은 라운드 로빈(Round Robin) 스케줄링으로, 모든 작업에게 동등한 CPU 시간을 할당하고 순환하며 실행함으로써 응답 시간(response time)을 최소화하고자 합니다.</p>
+<p>그러나 안타깝게도 이 두 가지 목표, 즉 반환 시간과 응답 시간은 상호 보완적인 관계에 있습니다. 하나를 최적화하면 다른 하나는 희생될 수밖에 없는 것이죠. 이는 시스템 설계에서 흔히 마주치는 트레이드오프(trade-off) 상황의 전형적인 예라 할 수 있습니다.</p>
+<p>우리는 또한 입출력(I/O) 작업이 스케줄링에 미치는 영향에 대해서도 살펴보았습니다. I/O bound 프로세스와 CPU bound 프로세스를 적절히 섞어 스케줄링하는 것이 전체 시스템 성능에 중요한 요소임을 확인했습니다.</p>
+<p>하지만 운영체제가 개별 프로세스의 실행 시간을 정확히 예측할 수 없다는 근본적인 한계는 여전히 남아 있습니다. 결국 완벽한 스케줄링 알고리즘이란 존재하기 힘들며, 주어진 상황에서 최선의 trade-off를 찾아내는 것이 관건이라 할 수 있겠습니다.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="ji-nyu" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/ji-nyu">박진우</a></p>
+</aside>
+<aside class="footnote brackets" id="ypilseong" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/ypilseong">양필성</a></p>
+</aside>
+<aside class="footnote brackets" id="parkeunseongkr" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/ParkEunSeongKR">박은성</a></p>
+</aside>
+</aside>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "chu-aie/os-2024",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./week03"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 3 - 스케줄링 1</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lab.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lab: 프로세스 생성과 실행 기초</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">워크로드에 대한 가정</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">스케줄링 평가 항목</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">선입선출</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">장점</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">단점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">최단 작업 우선</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">최소 잔여시간 우선</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">새로운 평가 기준 : 응답 시간</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">라운드 로빈</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">입출력 연산의 고려</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-more-oracle">만병통치약은 없다 (No More Oracle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">요약</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href='https://entelecheia.me/'>Young Joon Lee</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <script
+  data-embed-id="8f8d1c1a-0e3e-428a-a8a6-26acd215e1fe"
+  data-base-api-url="https://chat.entelecheia.app/api/embed"
+  data-brand-image-url="https://assets.entelecheia.ai/favicon.png"
+  data-chat-icon="magic"
+  data-sponsor-text="OS 2024"
+  data-sponsor-link="https://chat.entelecheia.app/workspace/os2024"
+  src="https://chat.entelecheia.app/embed/anythingllm-chat-widget.min.js">
+</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
